@@ -1,0 +1,228 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key] // รหัสผู้ใช้
+  email varchar [unique, not null] // อีเมลผู้ใช้ ต้องไม่ซ้ำ
+  username varchar [unique] // ชื่อผู้ใช้สำหรับ login/display ต้องไม่ซ้ำ
+  first_name varchar [not null] // ชื่อจริง
+  last_name varchar [not null] // นามสกุล
+  password_hash varchar [not null] // รหัสผ่านที่เข้ารหัสแล้ว
+  phone_number varchar // เบอร์โทรศัพท์
+  role varchar [not null, default: 'customer'] // บทบาท เช่น customer, admin
+  status varchar [not null, default: 'active'] // สถานะผู้ใช้ เช่น active, inactive, suspended
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table hotels {
+  id integer [primary key] // รหัสโรงแรม
+  name varchar [not null] // ชื่อโรงแรม
+  description varchar // รายละเอียดโรงแรม
+  address varchar // ที่อยู่
+  province varchar // จังหวัด
+  latitude decimal(10,7) // พิกัดละติจูด
+  longitude decimal(10,7) // พิกัดลองจิจูด
+  rating decimal(2,1) // คะแนนเฉลี่ยโรงแรม เช่น 4.5
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table facilities {
+  id integer [primary key] // รหัสสิ่งอำนวยความสะดวก
+  name varchar [not null] // ชื่อสิ่งอำนวยความสะดวกภาษาอังกฤษ เช่น Wifi, Pool, Parking
+  name_th varchar // ชื่อสิ่งอำนวยความสะดวกภาษาไทย
+  icon varchar // ไอคอนหรือ path ของรูปไอคอน
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+}
+
+Table hotel_facilities {
+  id integer [primary key] // รหัสรายการเชื่อมโรงแรมกับสิ่งอำนวยความสะดวก
+  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรม
+  facility_id integer [not null, ref: > facilities.id] // อ้างอิงสิ่งอำนวยความสะดวก
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+
+  indexes {
+    (hotel_id, facility_id) [unique] // กันโรงแรมเลือก facility ซ้ำ
+  }
+}
+
+Table room_types {
+  id integer [primary key] // รหัสประเภทห้อง
+  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ห้องประเภทนี้สังกัด
+  name varchar [not null] // ชื่อประเภทห้อง เช่น Standard, Deluxe, Suite
+  description varchar // รายละเอียดประเภทห้อง
+  capacity_adults int // จำนวนผู้ใหญ่สูงสุดที่รองรับ
+  capacity_children int // จำนวนเด็กสูงสุดที่รองรับ
+  bed_type varchar // ประเภทเตียง เช่น Twin, Double, King
+  size_sq_m int // ขนาดห้องหน่วยตารางเมตร
+  total_rooms int [not null] // จำนวนห้องทั้งหมดของประเภทนี้
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table room_prices {
+  id integer [primary key] // รหัสราคาห้อง
+  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
+  price decimal(10,2) [not null] // ราคาห้อง
+  start_date date [not null] // วันที่เริ่มใช้ราคานี้
+  end_date date [not null] // วันที่สิ้นสุดราคานี้
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table promotions {
+  id integer [primary key] // รหัสโปรโมชั่น
+  hotel_id integer [ref: > hotels.id] // อ้างอิงโรงแรม ถ้าโปรใช้ระดับโรงแรม
+  room_type_id integer [ref: > room_types.id] // อ้างอิงประเภทห้อง ถ้าโปรใช้เฉพาะห้องบางประเภท
+  name varchar // ชื่อโปรโมชั่น
+  description varchar // รายละเอียดโปรโมชั่น
+  discount_type varchar // ประเภทส่วนลด เช่น percent, fixed_price, fixed_amount
+  discount_value decimal(10,2) // มูลค่าส่วนลดตามประเภทที่กำหนด
+  start_date date // วันที่เริ่มโปร
+  end_date date // วันที่สิ้นสุดโปร
+  is_active boolean [default: true] // สถานะเปิด/ปิดโปรโมชั่น
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table bookings {
+  id integer [primary key] // รหัสการจอง
+  user_id integer [ref: > users.id] // อ้างอิงผู้ใช้ที่ทำการจอง
+  hotel_id integer [ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกจอง
+  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้องที่จอง
+  promotion_id integer [ref: > promotions.id] // อ้างอิงโปรโมชั่นที่ใช้กับการจองนี้
+  check_in date [not null] // วันที่เข้าพัก
+  check_out date [not null] // วันที่ออกจากที่พัก
+  adult_count integer [not null, default: 0] // จำนวนผู้ใหญ่
+  child_count integer [default: 0] // จำนวนเด็ก
+  has_pet boolean [default: false] // มีสัตว์เลี้ยงมาด้วยหรือไม่
+  has_car boolean [default: false] // มีรถมาด้วยหรือไม่
+  room_count integer [not null, default: 1] // จำนวนห้องที่จอง
+  total_price decimal(10,2) // ราคารวมก่อนหักส่วนลด
+  final_price decimal(10,2) // ราคาสุทธิหลังหักส่วนลด
+  status varchar [default: 'pending'] // สถานะการจอง เช่น pending, confirmed, checked_in, checked_out, cancelled
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+}
+
+Table booking_status_logs {
+  id integer [primary key] // รหัสประวัติการเปลี่ยนสถานะ
+  booking_id integer [not null, ref: > bookings.id] // อ้างอิงการจอง
+  old_status varchar // สถานะเดิมก่อนเปลี่ยน
+  new_status varchar [not null] // สถานะใหม่หลังเปลี่ยน
+  changed_by integer [ref: > users.id] // ผู้ที่เปลี่ยนสถานะ เช่น admin หรือ customer
+  changed_at timestamp // วันที่และเวลาที่เปลี่ยนสถานะ
+  note varchar // หมายเหตุหรือเหตุผลในการเปลี่ยนสถานะ
+}
+
+Table payments {
+  id integer [primary key] // รหัสการชำระเงิน
+  booking_id integer [not null, ref: > bookings.id] // อ้างอิงการจอง
+  payment_method varchar [not null] // วิธีการชำระเงิน เช่น card, transfer, cash, qr
+  amount decimal(10,2) [not null] // จำนวนเงินที่ชำระ
+  payment_status varchar [not null, default: 'pending'] // สถานะการชำระเงิน เช่น pending, paid, failed, refunded
+  transaction_ref varchar // เลขอ้างอิงธุรกรรม
+  paid_at timestamp // วันที่และเวลาที่ชำระเงินจริง
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+}
+
+Table hotel_images {
+  id integer [primary key] // รหัสรูปภาพโรงแรม
+  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรม
+  image_url varchar [not null] // URL หรือ path ของรูปภาพ
+  is_cover boolean [default: false] // เป็นรูปปกหรือไม่
+  sort_order integer [default: 0] // ลำดับการแสดงผลรูป
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table room_type_images {
+  id integer [primary key] // รหัสรูปภาพประเภทห้อง
+  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
+  image_url varchar [not null] // URL หรือ path ของรูปภาพ
+  is_cover boolean [default: false] // เป็นรูปปกหรือไม่
+  sort_order integer [default: 0] // ลำดับการแสดงผลรูป
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+}
+
+Table reviews {
+  id integer [primary key] // รหัสรีวิว
+  user_id integer [not null, ref: > users.id] // อ้างอิงผู้ใช้ที่รีวิว
+  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกรีวิว
+  booking_id integer [ref: > bookings.id] // อ้างอิงการจองที่เกี่ยวข้องกับรีวิว
+  rating int [not null] // คะแนนรีวิว เช่น 1-5
+  comment varchar // ข้อความรีวิว
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+}
+
+Table favorite_hotels {
+  id integer [primary key] // รหัสรายการโรงแรมโปรด
+  user_id integer [not null, ref: > users.id] // อ้างอิงผู้ใช้ที่กดถูกใจ
+  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกกดถูกใจ
+  created_at timestamp // วันที่เพิ่มเข้าโรงแรมโปรด
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+  deleted_at timestamp // วันที่ลบแบบ soft delete
+
+  indexes {
+    (user_id, hotel_id) [unique] // กันผู้ใช้กด favorite โรงแรมเดิมซ้ำ
+  }
+}
+
+Table room_type_facilities {
+  id integer [primary key] // รหัสรายการเชื่อมประเภทห้องกับสิ่งอำนวยความสะดวก
+  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
+  facility_id integer [not null, ref: > facilities.id] // อ้างอิงสิ่งอำนวยความสะดวก
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+
+  indexes {
+    (room_type_id, facility_id) [unique] // กันการเพิ่ม facility ซ้ำในห้องประเภทเดิม
+  }
+}
+
+Table booking_guests {
+  id integer [primary key] // รหัสผู้เข้าพักในรายการจอง
+  booking_id integer [not null, ref: > bookings.id] // อ้างอิงการจอง
+  first_name varchar [not null] // ชื่อผู้เข้าพัก
+  last_name varchar [not null] // นามสกุลผู้เข้าพัก
+  guest_type varchar [not null] // ประเภทผู้เข้าพัก เช่น adult, child
+  created_at timestamp // วันที่สร้างข้อมูล
+  updated_at timestamp // วันที่แก้ไขล่าสุด
+}
+
+Table attractions {
+  id integer [primary key] // รหัสสถานที่
+  name varchar [not null] // ชื่อสถานที่
+  description varchar // รายละเอียด
+  address varchar // ที่อยู่
+  latitude decimal(10,7) // พิกัด lat
+  longitude decimal(10,7) // พิกัด lng
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table hotel_attractions {
+  id integer [primary key]
+  hotel_id integer [not null, ref: > hotels.id] // โรงแรม
+  attraction_id integer [not null, ref: > attractions.id] // สถานที่
+  distance_km decimal(5,2) // ระยะทางจากโรงแรม
+  created_at timestamp
+  updated_at timestamp
+
+  indexes {
+    (hotel_id, attraction_id) [unique]
+  }
+}
