@@ -37,11 +37,4 @@ SQL
 
 "${SCRIPT_DIR}/apply-schema.sh"
 
-SEED_FILE="${DB_DIR}/seeds/001_seed.sql"
-if [[ -f "${SEED_FILE}" ]]; then
-  echo "Applying $(basename "${SEED_FILE}")"
-  docker compose --env-file "${ENV_FILE}" -f "${DB_DIR}/docker-compose.yml" \
-    exec -T "${POSTGRES_SERVICE}" psql -v ON_ERROR_STOP=1 -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" < "${SEED_FILE}"
-fi
-
 echo "Database reset completed."

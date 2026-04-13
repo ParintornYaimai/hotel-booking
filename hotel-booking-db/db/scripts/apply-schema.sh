@@ -28,6 +28,7 @@ set +a
 
 shopt -s nullglob
 SCHEMA_FILES=("${DB_DIR}/schema/"*.sql)
+SEED_FILES=("${DB_DIR}/seeds/"*.sql)
 shopt -u nullglob
 
 if [[ ${#SCHEMA_FILES[@]} -eq 0 ]]; then
@@ -41,4 +42,14 @@ for schema_file in "${SCHEMA_FILES[@]}"; do
     exec -T "${POSTGRES_SERVICE}" psql -v ON_ERROR_STOP=1 -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" < "${schema_file}"
 done
 
-echo "Schema applied successfully."
+if [[ ${#SEED_FILES[@]} -eq 0 ]]; then
+  echo "No seed files found in ${DB_DIR}/seeds. Skipping seeding."
+else
+  for seed_file in "${SEED_FILES[@]}"; do
+    echo "Applying $(basename "${seed_file}")"
+    docker compose --env-file "${ENV_FILE}" -f "${DB_DIR}/docker-compose.yml" \
+      exec -T "${POSTGRES_SERVICE}" psql -v ON_ERROR_STOP=1 -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" < "${seed_file}"
+  done
+fi
+
+echo "Schema and seeds applied successfully."
