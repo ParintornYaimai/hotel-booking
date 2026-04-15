@@ -822,3 +822,530 @@ VALUES
   (9, 4, 5, 0.60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
   (10, 4, 2, 2.90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT DO NOTHING;
+
+-- Ensure every table has at least 4 seed rows
+
+INSERT INTO users (
+  id,
+  email,
+  username,
+  first_name,
+  last_name,
+  password_hash,
+  phone_number,
+  role,
+  status,
+  created_at,
+  updated_at
+)
+VALUES
+  (
+    4,
+    'ops.demo@example.com',
+    'ops_demo',
+    'Ops',
+    'Demo',
+    '$2b$12$replace-with-real-hash-4',
+    '+66000000004',
+    'admin',
+    'active',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+  )
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO roles (id, name, description, created_at, updated_at)
+VALUES
+  (1, 'admin', 'Administrator role', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'editor', 'Content editor role', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'finance', 'Finance operator role', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'support', 'Support agent role', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO admin_user_roles (id, user_id, role_id, created_at, updated_at)
+VALUES
+  (1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO admin_invitations (
+  id,
+  email,
+  role_id,
+  token,
+  status,
+  expires_at,
+  invited_by,
+  accepted_at,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 'invite.admin1@example.com', 1, 'adm-token-0001', 'pending', CURRENT_TIMESTAMP + INTERVAL '7 days', 3, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'invite.admin2@example.com', 2, 'adm-token-0002', 'accepted', CURRENT_TIMESTAMP + INTERVAL '7 days', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'invite.admin3@example.com', 3, 'adm-token-0003', 'revoked', CURRENT_TIMESTAMP + INTERVAL '7 days', 4, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'invite.admin4@example.com', 4, 'adm-token-0004', 'expired', CURRENT_TIMESTAMP - INTERVAL '1 day', 4, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO user_sessions (
+  id,
+  user_id,
+  session_token,
+  ip_address,
+  user_agent,
+  last_active_at,
+  expires_at,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 'sess-0001', '127.0.0.1', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 'sess-0002', '127.0.0.2', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 'sess-0003', '127.0.0.3', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 'sess-0004', '127.0.0.4', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO destinations (
+  id,
+  name,
+  slug,
+  type,
+  description,
+  country,
+  province,
+  cover_image_url,
+  is_popular,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 'Bangkok', 'bangkok', 'hotel', 'Capital city destination', 'Thailand', 'Bangkok', 'https://example.com/images/destination-bangkok.jpg', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Chiang Mai', 'chiang-mai', 'hotel', 'Northern mountain destination', 'Thailand', 'Chiang Mai', 'https://example.com/images/destination-chiangmai.jpg', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'Phuket', 'phuket', 'hotel', 'Island and beach destination', 'Thailand', 'Phuket', 'https://example.com/images/destination-phuket.jpg', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'Pattaya', 'pattaya', 'hotel', 'Coastal city destination', 'Thailand', 'Chonburi', 'https://example.com/images/destination-pattaya.jpg', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO categories (id, name, slug, description, icon, created_at, updated_at)
+VALUES
+  (1, 'City', 'city', 'City stay hotels', 'city', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Beach', 'beach', 'Beachfront hotels', 'beach', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'Mountain', 'mountain', 'Mountain retreat hotels', 'mountain', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'Family', 'family', 'Family friendly hotels', 'family', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO coupons (
+  id,
+  code,
+  name,
+  description,
+  discount_type,
+  discount_value,
+  min_spend,
+  max_discount,
+  usage_limit,
+  usage_per_user,
+  starts_at,
+  ends_at,
+  status,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 'WELCOME10', 'Welcome 10%', 'First booking discount', 'percent', 10.00, 1000.00, 1000.00, 1000, 1, CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP + INTERVAL '30 days', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'FAMILY500', 'Family 500', 'Fixed amount family discount', 'fixed_amount', 500.00, 4000.00, 500.00, 500, 1, CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP + INTERVAL '30 days', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'BUSINESS7', 'Business 7%', 'Business traveler discount', 'percent', 7.00, 2000.00, 800.00, 800, 2, CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP + INTERVAL '30 days', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'SUMMER300', 'Summer 300', 'Seasonal fixed discount', 'fixed_amount', 300.00, 2500.00, 300.00, 900, 2, CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP + INTERVAL '30 days', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO coupon_usages (id, coupon_id, user_id, booking_id, used_at, created_at, updated_at)
+VALUES
+  (1, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 2, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 3, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO taxes (id, name, type, value, is_active, created_at, updated_at)
+VALUES
+  (1, 'VAT 7%', 'percent', 7.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Service Tax', 'percent', 1.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'Tourism Tax', 'fixed_amount', 50.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'Municipal Tax', 'percent', 2.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO service_fees (id, name, type, value, is_active, created_at, updated_at)
+VALUES
+  (1, 'Platform Fee', 'percent', 3.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Handling Fee', 'fixed_amount', 99.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'Weekend Fee', 'fixed_amount', 150.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'High Season Fee', 'percent', 5.00, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO booking_rooms (
+  id,
+  booking_id,
+  room_type_id,
+  room_name_snapshot,
+  quantity,
+  price_per_night,
+  nights,
+  subtotal_amount,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 1, 'Deluxe', 1, 2500.00, 2, 5000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 2, 'Family Suite', 1, 4200.00, 3, 12600.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 4, 'Executive King', 1, 3300.00, 2, 6600.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 5, 'Garden Villa', 1, 3600.00, 5, 18000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO booking_discounts (
+  id,
+  booking_id,
+  coupon_id,
+  promotion_id,
+  discount_type,
+  discount_value,
+  applied_amount,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 1, 1, 'percent', 10.00, 500.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 2, 2, 'percent', 12.00, 1512.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 3, 3, 'fixed_amount', 300.00, 300.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 4, 4, 'percent', 15.00, 2700.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO hotel_policies (
+  id,
+  hotel_id,
+  check_in_policy,
+  check_out_policy,
+  cancellation_policy,
+  smoking_policy,
+  pet_policy,
+  children_policy,
+  extra_bed_policy,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 'Check-in after 14:00', 'Check-out before 12:00', 'Free cancellation 48 hours', 'Non-smoking rooms only', 'Pets not allowed', 'Children welcome', 'Extra bed available on request', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 'Check-in after 14:00', 'Check-out before 12:00', 'Free cancellation 24 hours', 'Designated smoking area', 'Pets not allowed', 'Children welcome', 'Extra bed with charge', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 'Check-in after 15:00', 'Check-out before 11:00', 'Free cancellation 72 hours', 'Non-smoking property', 'Small pets allowed', 'Children welcome', 'Extra bed limited', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 'Check-in after 14:00', 'Check-out before 12:00', 'Free cancellation 48 hours', 'Designated smoking area', 'Pets allowed', 'Children welcome', 'Extra bed available', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO wishlists (id, user_id, hotel_id, created_at, updated_at)
+VALUES
+  (1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO payment_methods (id, code, name, is_active, created_at, updated_at)
+VALUES
+  (1, 'card', 'Credit/Debit Card', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'promptpay', 'PromptPay QR', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'bank_transfer', 'Bank Transfer', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'cash', 'Cash at Hotel', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO payment_gateways (id, name, code, is_active, created_at, updated_at)
+VALUES
+  (1, 'Omise', 'omise', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Stripe', 'stripe', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, '2C2P', '2c2p', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'SCB Easy', 'scb_easy', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO refunds (
+  id,
+  payment_id,
+  booking_id,
+  amount,
+  reason,
+  status,
+  refund_ref,
+  processed_by,
+  processed_at,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 1, 100.00, 'Price adjustment', 'success', 'RF-0001', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 2, 200.00, 'Partial goodwill refund', 'success', 'RF-0002', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 3, 150.00, 'Pending manual review', 'pending', 'RF-0003', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 5, 5, 500.00, 'Cancelled booking refund', 'success', 'RF-0004', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO billing_profiles (
+  id,
+  user_id,
+  booking_id,
+  company_name,
+  tax_number,
+  address,
+  province,
+  country,
+  postal_code,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 1, 'Demo Co., Ltd.', '0105559000001', '101 Demo Road', 'Bangkok', 'Thailand', '10110', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 3, 'City Biz Co., Ltd.', '0105559000002', '202 Business Road', 'Bangkok', 'Thailand', '10260', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 5, 'Mountain Trade Co., Ltd.', '0505559000003', '303 Hillside Road', 'Chiang Mai', 'Thailand', '50000', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 6, 'Beach Ventures Co., Ltd.', '8305559000004', '404 Coast Road', 'Phuket', 'Thailand', '83000', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO invoices (
+  id,
+  booking_id,
+  payment_id,
+  billing_profile_id,
+  invoice_number,
+  type,
+  file_url,
+  issued_at,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 1, 1, 'INV-2026-0001', 'receipt', 'https://example.com/invoices/INV-2026-0001.pdf', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 2, 2, 'INV-2026-0002', 'tax_invoice', 'https://example.com/invoices/INV-2026-0002.pdf', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 3, 3, 'INV-2026-0003', 'invoice', 'https://example.com/invoices/INV-2026-0003.pdf', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 4, 4, 'INV-2026-0004', 'receipt', 'https://example.com/invoices/INV-2026-0004.pdf', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO newsletter_subscribers (
+  id,
+  email,
+  status,
+  subscribed_at,
+  unsubscribed_at,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 'news1@example.com', 'subscribed', CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'news2@example.com', 'subscribed', CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'news3@example.com', 'unsubscribed', CURRENT_TIMESTAMP - INTERVAL '10 days', CURRENT_TIMESTAMP - INTERVAL '2 days', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'news4@example.com', 'subscribed', CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO features (id, title, description, icon, sort_order, created_at, updated_at)
+VALUES
+  (1, 'Best Price Guarantee', 'We offer competitive prices every day.', 'tag', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Free Cancellation', 'Many properties support free cancellation.', 'calendar', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, '24/7 Support', 'Support team available all day.', 'headset', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'Secure Payment', 'Encrypted and secure checkout process.', 'shield', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO pages (id, slug, title, content, status, created_at, updated_at)
+VALUES
+  (1, 'about', 'About Us', 'About us page content.', 'published', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'privacy', 'Privacy Policy', 'Privacy policy content.', 'published', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'terms', 'Terms and Conditions', 'Terms and conditions content.', 'published', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'contact', 'Contact Us', 'Contact information page.', 'published', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO support_contacts (id, email, phone, line_id, whatsapp, created_at, updated_at)
+VALUES
+  (1, 'support@demo.com', '+66020000001', 'support-demo-1', '+66020000001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'sales@demo.com', '+66020000002', 'support-demo-2', '+66020000002', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'billing@demo.com', '+66020000003', 'support-demo-3', '+66020000003', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'ops@demo.com', '+66020000004', 'support-demo-4', '+66020000004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO uploads (
+  id,
+  file_name,
+  file_url,
+  file_type,
+  mime_type,
+  file_size,
+  uploaded_by,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 'hotel-cover-1.jpg', 'https://example.com/uploads/hotel-cover-1.jpg', 'image', 'image/jpeg', 120000, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'hotel-cover-2.jpg', 'https://example.com/uploads/hotel-cover-2.jpg', 'image', 'image/jpeg', 130000, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'invoice-template.pdf', 'https://example.com/uploads/invoice-template.pdf', 'document', 'application/pdf', 98000, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'promotion-banner.png', 'https://example.com/uploads/promotion-banner.png', 'image', 'image/png', 145000, 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO attraction_images (
+  id,
+  attraction_id,
+  image_url,
+  thumbnail_url,
+  is_cover,
+  sort_order,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 'https://example.com/images/attraction-1.jpg', 'https://example.com/images/attraction-1-thumb.jpg', true, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 'https://example.com/images/attraction-2.jpg', 'https://example.com/images/attraction-2-thumb.jpg', true, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 'https://example.com/images/attraction-3.jpg', 'https://example.com/images/attraction-3-thumb.jpg', true, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 'https://example.com/images/attraction-4.jpg', 'https://example.com/images/attraction-4-thumb.jpg', true, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO flash_deals (
+  id,
+  hotel_id,
+  title,
+  description,
+  discount_percent,
+  start_at,
+  end_at,
+  is_active,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 'Midnight Deal', 'Late-night booking special', 15.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '5 days', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 'Business Quick Save', 'Business short-stay discount', 10.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '7 days', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 'Mountain Escape', 'Special mountain package', 12.50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '10 days', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 'Beach Blast', 'Limited beach resort discount', 18.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '3 days', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO banners (
+  id,
+  page_key,
+  title,
+  subtitle,
+  image_url,
+  cta_label,
+  cta_link,
+  is_active,
+  sort_order,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 'home', 'Plan Your Next Stay', 'Find hotels with the best deals', 'https://example.com/banners/home-1.jpg', 'Book Now', '/hotels', true, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'home', 'Weekend Getaway', 'Escape to beach and mountain stays', 'https://example.com/banners/home-2.jpg', 'Explore', '/destinations', true, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'offers', 'Flash Deals', 'Limited-time hotel promotions', 'https://example.com/banners/offers-1.jpg', 'View Deals', '/offers', true, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'about', 'About Our Platform', 'Trusted booking partner', 'https://example.com/banners/about-1.jpg', 'Learn More', '/about', true, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO audit_logs (
+  id,
+  user_id,
+  entity_type,
+  entity_id,
+  action,
+  before_data,
+  after_data,
+  created_at
+)
+VALUES
+  (1, 3, 'hotel', 1, 'update', '{"status":"draft"}', '{"status":"published"}', CURRENT_TIMESTAMP),
+  (2, 2, 'promotion', 2, 'create', NULL, '{"name":"Family Weekend"}', CURRENT_TIMESTAMP),
+  (3, 4, 'coupon', 1, 'update', '{"status":"inactive"}', '{"status":"active"}', CURRENT_TIMESTAMP),
+  (4, 1, 'booking', 3, 'update', '{"status":"pending"}', '{"status":"confirmed"}', CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO revenue_targets (id, month, target_amount, created_at, updated_at)
+VALUES
+  (1, '2026-01', 500000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, '2026-02', 520000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, '2026-03', 540000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, '2026-04', 560000.00, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO system_settings (id, setting_key, setting_value, created_at, updated_at)
+VALUES
+  (1, 'default_currency', 'THB', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'default_timezone', 'Asia/Bangkok', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'maintenance_mode', 'false', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'booking_confirmation_timeout_minutes', '30', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO system_notification_settings (
+  id,
+  email_enabled,
+  push_enabled,
+  sms_enabled,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, true, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, true, true, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, true, true, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, false, true, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO merchant_accounts (
+  id,
+  payment_gateway_id,
+  merchant_name,
+  merchant_id,
+  status,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, 1, 'Demo Merchant Omise', 'OMS-M-001', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 'Demo Merchant Stripe', 'STP-M-002', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 'Demo Merchant 2C2P', 'TCP-M-003', 'inactive', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 'Demo Merchant SCB', 'SCB-M-004', 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO booking_rules (
+  id,
+  allow_pay_later,
+  auto_cancel_pending_minutes,
+  refund_policy_note,
+  created_at,
+  updated_at
+)
+VALUES
+  (1, false, 30, 'Default strict booking rule', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, true, 45, 'Allow pay-later for selected hotels', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, false, 20, 'Fast auto-cancel for flash deals', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, true, 60, 'Relaxed rule for corporate clients', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO gateway_test_logs (
+  id,
+  payment_gateway_id,
+  tested_by,
+  status,
+  response_message,
+  tested_at,
+  created_at
+)
+VALUES
+  (1, 1, 3, 'success', 'Gateway connectivity OK', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 2, 3, 'success', 'Payment intent created', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 3, 4, 'failed', 'Timeout from upstream provider', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 4, 4, 'success', 'Webhook signature valid', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO currencies (id, code, name, symbol, created_at, updated_at)
+VALUES
+  (1, 'THB', 'Thai Baht', 'THB', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'USD', 'US Dollar', '$', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'EUR', 'Euro', 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'JPY', 'Japanese Yen', 'JPY', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO timezones (id, name, utc_offset, created_at, updated_at)
+VALUES
+  (1, 'Asia/Bangkok', '+07:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (2, 'Asia/Tokyo', '+09:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (3, 'Europe/London', '+00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (4, 'America/New_York', '-05:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT DO NOTHING;
+
+ 
