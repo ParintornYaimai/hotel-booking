@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS billing_profiles (
-  id integer PRIMARY KEY,
-  user_id integer REFERENCES users (id),
-  booking_id integer REFERENCES bookings (id),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES users (id),
+  booking_id uuid REFERENCES bookings (id),
   company_name varchar,
   tax_number varchar,
   address varchar,

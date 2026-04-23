@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS facilities (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name varchar NOT NULL,
   name_th varchar,
   icon varchar,

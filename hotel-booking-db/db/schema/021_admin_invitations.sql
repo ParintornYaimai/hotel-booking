@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS admin_invitations (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email varchar NOT NULL,
-  role_id integer REFERENCES roles (id),
+  role_id uuid REFERENCES roles (id),
   token varchar NOT NULL UNIQUE,
   status varchar NOT NULL DEFAULT 'pending',
   expires_at timestamp,
-  invited_by integer REFERENCES users (id),
+  invited_by uuid REFERENCES users (id),
   accepted_at timestamp,
   created_at timestamp,
   updated_at timestamp

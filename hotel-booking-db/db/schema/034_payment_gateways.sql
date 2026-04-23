@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS payment_gateways (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name varchar NOT NULL,
   code varchar NOT NULL UNIQUE,
   is_active boolean DEFAULT true,

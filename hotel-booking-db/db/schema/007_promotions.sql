@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS promotions (
-  id integer PRIMARY KEY,
-  hotel_id integer REFERENCES hotels (id),
-  room_type_id integer REFERENCES room_types (id),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  hotel_id uuid REFERENCES hotels (id),
+  room_type_id uuid REFERENCES room_types (id),
   name varchar,
   description varchar,
   discount_type varchar,

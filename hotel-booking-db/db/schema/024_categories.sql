@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS categories (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name varchar NOT NULL,
   slug varchar NOT NULL UNIQUE,
   description varchar,

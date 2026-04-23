@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS room_types (
-  id integer PRIMARY KEY,
-  hotel_id integer NOT NULL REFERENCES hotels (id),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  hotel_id uuid NOT NULL REFERENCES hotels (id),
   name varchar NOT NULL,
   description varchar,
   capacity_adults integer,

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS favorite_hotels (
-  id integer PRIMARY KEY,
-  user_id integer NOT NULL REFERENCES users (id),
-  hotel_id integer NOT NULL REFERENCES hotels (id),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES users (id),
+  hotel_id uuid NOT NULL REFERENCES hotels (id),
   created_at timestamp,
   updated_at timestamp,
   deleted_at timestamp,

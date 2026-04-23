@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS support_contacts (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email varchar,
   phone varchar,
   line_id varchar,

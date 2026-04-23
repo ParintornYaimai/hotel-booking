@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS invoices (
-  id integer PRIMARY KEY,
-  booking_id integer REFERENCES bookings (id),
-  payment_id integer REFERENCES payments (id),
-  billing_profile_id integer REFERENCES billing_profiles (id),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  booking_id uuid REFERENCES bookings (id),
+  payment_id uuid REFERENCES payments (id),
+  billing_profile_id uuid REFERENCES billing_profiles (id),
   invoice_number varchar UNIQUE,
   type varchar DEFAULT 'receipt',
   file_url varchar,

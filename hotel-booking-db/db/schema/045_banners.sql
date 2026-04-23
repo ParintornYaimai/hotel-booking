@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS banners (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   page_key varchar NOT NULL,
   title varchar,
   subtitle varchar,

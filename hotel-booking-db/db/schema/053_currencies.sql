@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS currencies (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   code varchar NOT NULL UNIQUE,
   name varchar,
   symbol varchar,

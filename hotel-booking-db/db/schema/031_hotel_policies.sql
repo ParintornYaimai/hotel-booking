@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS hotel_policies (
-  id integer PRIMARY KEY,
-  hotel_id integer NOT NULL REFERENCES hotels (id),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  hotel_id uuid NOT NULL REFERENCES hotels (id),
   check_in_policy text,
   check_out_policy text,
   cancellation_policy text,

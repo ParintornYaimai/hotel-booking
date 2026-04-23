@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS pages (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   slug varchar NOT NULL UNIQUE,
   title varchar NOT NULL,
   content text,

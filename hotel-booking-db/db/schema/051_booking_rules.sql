@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS booking_rules (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   allow_pay_later boolean DEFAULT false,
   auto_cancel_pending_minutes integer DEFAULT 30,
   refund_policy_note text,

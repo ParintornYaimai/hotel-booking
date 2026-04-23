@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS features (
-  id integer PRIMARY KEY,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   title varchar NOT NULL,
   description text,
   icon varchar,
