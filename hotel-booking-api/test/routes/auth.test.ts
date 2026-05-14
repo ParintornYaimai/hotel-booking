@@ -1,0 +1,39 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+
+import { build } from '../helper';
+
+test('auth login with valid credentials', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/auth/login',
+    payload: {
+      email: 'demo@hotel-booking.local',
+      password: 'password123'
+    }
+  });
+
+  assert.equal(response.statusCode, 200);
+  const body = response.json();
+  assert.equal(body.user.id, 'user_1');
+  assert.equal(body.tokens.tokenType, 'Bearer');
+});
+
+test('auth login with invalid credentials', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/auth/login',
+    payload: {
+      email: 'demo@hotel-booking.local',
+      password: 'wrong-password'
+    }
+  });
+
+  assert.equal(response.statusCode, 401);
+});
