@@ -5,10 +5,37 @@ import { bookingRoutes } from './modules/bookings/interface/http/routes/booking.
 import { systemRoutes } from './modules/system/interface/http/routes/system.route';
 import { userRoutes } from './modules/users/interface/http/routes/user.route';
 import { loadEnv } from './shared/config/env';
+import { databasePlugin } from './shared/plugins/database-plugin';
 import { corePlugins } from './shared/plugins/core-plugins';
 
 export interface BuildAppOptions extends FastifyServerOptions {
   env?: NodeJS.ProcessEnv;
+}
+
+function buildLoggerOptions(env: ReturnType<typeof loadEnv>): NonNullable<FastifyServerOptions['logger']> {
+  const options = {
+    level: env.LOG_LEVEL,
+    formatters: {
+      level: (label: string) => ({ level: label.toUpperCase() })
+    },
+    timestamp: () => `,"time":"${new Date().toISOString()}"`
+  };
+
+  if (env.NODE_ENV !== 'production') {
+    return {
+      ...options,
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l o',
+          ignore: 'pid,hostname'
+        }
+      }
+    };
+  }
+
+  return options;
 }
 
 export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
@@ -17,10 +44,11 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
 
   const app = Fastify({
     ...fastifyOptions,
-    logger: fastifyOptions.logger ?? { level: env.LOG_LEVEL }
+    logger: fastifyOptions.logger ?? buildLoggerOptions(env)
   });
 
   app.register(corePlugins, { env });
+  app.register(databasePlugin, { env });
   app.register(systemRoutes);
   app.register(authRoutes, { prefix: '/auth' });
   app.register(userRoutes, { prefix: '/users' });

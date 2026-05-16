@@ -4,7 +4,7 @@ export interface Booking {
   hotelId: string;
   checkInDate: string;
   checkOutDate: string;
-  status: 'confirmed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed' | string;
   createdAt: string;
 }
 
