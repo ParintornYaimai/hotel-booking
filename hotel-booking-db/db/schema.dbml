@@ -1,8 +1,12 @@
 // Use DBML to define your database structure
 // Docs: https://dbml.dbdiagram.io/docs
 
+// Purpose: ตารางผู้ใช้งาน เก็บข้อมูลบัญชี โปรไฟล์ และสถานะการใช้งาน
+// Access model:
+// - users.role = coarse account type (customer/backoffice/admin)
+// - detailed backoffice/admin permissions are modeled in roles + admin_user_roles
 Table users {
-  id integer [primary key] // รหัสผู้ใช้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสผู้ใช้
   email varchar [unique, not null] // อีเมลผู้ใช้สำหรับ login และติดต่อ ต้องไม่ซ้ำ
   username varchar [unique] // ชื่อผู้ใช้สำหรับ display หรือ login แบบ username
   first_name varchar [not null] // ชื่อจริงของผู้ใช้
@@ -20,18 +24,22 @@ Table users {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางบทบาท เก็บชื่อ role และคำอธิบายสิทธิ์
+// Admin/backoffice permission roles (RBAC scope), not general customer roles.
 Table roles {
-  id integer [primary key] // รหัส role
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส role
   name varchar [unique, not null] // ชื่อ role เช่น admin, super_admin, editor
   description varchar // คำอธิบายหน้าที่ของ role
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางเชื่อมผู้ใช้แอดมินกับบทบาทที่ได้รับ
+// Bridge table for assigning fine-grained roles to admin/backoffice users.
 Table admin_user_roles {
-  id integer [primary key] // รหัสรายการเชื่อม admin กับ role
-  user_id integer [not null, ref: > users.id] // อ้างอิงผู้ใช้ที่เป็น admin
-  role_id integer [not null, ref: > roles.id] // อ้างอิง role ที่ผู้ใช้นั้นได้รับ
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการเชื่อม admin กับ role
+  user_id uuid [not null, ref: > users.id] // อ้างอิงผู้ใช้ที่เป็น admin
+  role_id uuid [not null, ref: > roles.id] // อ้างอิง role ที่ผู้ใช้นั้นได้รับ
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 
@@ -40,22 +48,24 @@ Table admin_user_roles {
   }
 }
 
+// Purpose: ตารางคำเชิญแอดมิน เก็บโทเคนและสถานะการตอบรับ
 Table admin_invitations {
-  id integer [primary key] // รหัสคำเชิญ admin
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสคำเชิญ admin
   email varchar [not null] // อีเมลที่ใช้ส่งคำเชิญ
-  role_id integer [ref: > roles.id] // role ที่จะมอบให้เมื่อรับคำเชิญ
+  role_id uuid [ref: > roles.id] // role ที่จะมอบให้เมื่อรับคำเชิญ
   token varchar [unique, not null] // token สำหรับลิงก์เชิญ
   status varchar [not null, default: 'pending'] // สถานะคำเชิญ เช่น pending, accepted, expired, revoked
   expires_at timestamp // วันหมดอายุของคำเชิญ
-  invited_by integer [ref: > users.id] // ผู้ที่ส่งคำเชิญ
+  invited_by uuid [ref: > users.id] // ผู้ที่ส่งคำเชิญ
   accepted_at timestamp // เวลาที่ผู้รับกดยอมรับคำเชิญ
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางเซสชันผู้ใช้ เก็บข้อมูลการล็อกอินและอุปกรณ์
 Table user_sessions {
-  id integer [primary key] // รหัส session
-  user_id integer [not null, ref: > users.id] // อ้างอิงผู้ใช้เจ้าของ session
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส session
+  user_id uuid [not null, ref: > users.id] // อ้างอิงผู้ใช้เจ้าของ session
   session_token varchar [unique, not null] // token/session id ที่ใช้ยืนยัน session
   ip_address varchar // IP ที่ใช้ login
   user_agent varchar // ข้อมูล browser/device
@@ -65,8 +75,9 @@ Table user_sessions {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางปลายทาง เก็บเมือง/พื้นที่สำหรับจัดกลุ่มโรงแรม
 Table destinations {
-  id integer [primary key] // รหัสปลายทาง/เมือง/สถานที่
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสปลายทาง/เมือง/สถานที่
   name varchar [not null] // ชื่อปลายทาง เช่น Bangkok, Phuket, Chiang Mai
   slug varchar [unique, not null] // slug สำหรับใช้ใน URL
   type varchar [default: 'hotel'] // ประเภทการใช้งาน เช่น hotel, experience, guide
@@ -80,8 +91,9 @@ Table destinations {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางหมวดหมู่ เก็บประเภทหรือธีมของโรงแรม
 Table categories {
-  id integer [primary key] // รหัสหมวดหมู่
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสหมวดหมู่
   name varchar [not null] // ชื่อหมวดหมู่ เช่น Nature, Beach, Mountain
   slug varchar [unique, not null] // slug สำหรับใช้ใน URL
   description varchar // รายละเอียดหมวดหมู่
@@ -90,10 +102,11 @@ Table categories {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางโรงแรม เก็บข้อมูลหลักของโรงแรมแต่ละแห่ง
 Table hotels {
-  id integer [primary key] // รหัสโรงแรม
-  destination_id integer [ref: > destinations.id] // อ้างอิงปลายทางที่โรงแรมตั้งอยู่
-  category_id integer [ref: > categories.id] // อ้างอิงหมวดหมู่โรงแรม
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสโรงแรม
+  destination_id uuid [ref: > destinations.id] // อ้างอิงปลายทางที่โรงแรมตั้งอยู่
+  category_id uuid [ref: > categories.id] // อ้างอิงหมวดหมู่โรงแรม
   name varchar [not null] // ชื่อโรงแรม
   slug varchar [unique] // slug สำหรับ URL หน้า detail โรงแรม
   description text // รายละเอียดโรงแรมแบบเต็ม
@@ -117,9 +130,10 @@ Table hotels {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางรูปโรงแรม เก็บภาพและลำดับการแสดงผล
 Table hotel_images {
-  id integer [primary key] // รหัสรูปภาพโรงแรม
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมเจ้าของรูป
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรูปภาพโรงแรม
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรมเจ้าของรูป
   image_url varchar [not null] // URL รูปภาพจริง
   thumbnail_url varchar // URL รูปภาพขนาดย่อ
   is_cover boolean [default: false] // เป็นรูปปกของโรงแรมหรือไม่
@@ -129,8 +143,9 @@ Table hotel_images {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางสิ่งอำนวยความสะดวกมาตรฐานของระบบ
 Table facilities {
-  id integer [primary key] // รหัสสิ่งอำนวยความสะดวก
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสสิ่งอำนวยความสะดวก
   name varchar [not null] // ชื่อสิ่งอำนวยความสะดวกภาษาอังกฤษ เช่น Wifi, Pool, Parking
   name_th varchar // ชื่อสิ่งอำนวยความสะดวกภาษาไทย
   icon varchar // icon หรือ path ของรูปไอคอน
@@ -139,10 +154,11 @@ Table facilities {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางเชื่อมโรงแรมกับสิ่งอำนวยความสะดวก
 Table hotel_facilities {
-  id integer [primary key] // รหัสรายการเชื่อมโรงแรมกับ facility
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรม
-  facility_id integer [not null, ref: > facilities.id] // อ้างอิงสิ่งอำนวยความสะดวก
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการเชื่อมโรงแรมกับ facility
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรม
+  facility_id uuid [not null, ref: > facilities.id] // อ้างอิงสิ่งอำนวยความสะดวก
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 
@@ -151,17 +167,18 @@ Table hotel_facilities {
   }
 }
 
+// Purpose: ตารางประเภทห้องพักของแต่ละโรงแรม
 Table room_types {
-  id integer [primary key] // รหัสประเภทห้อง
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ห้องนี้สังกัด
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสประเภทห้อง
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ห้องนี้สังกัด
   name varchar [not null] // ชื่อประเภทห้อง เช่น Standard, Deluxe, Suite
   description text // รายละเอียดประเภทห้อง
-  capacity_adults int // จำนวนผู้ใหญ่สูงสุดที่รองรับ
-  capacity_children int // จำนวนเด็กสูงสุดที่รองรับ
-  max_occupancy int // จำนวนคนรวมสูงสุดที่เข้าพักได้
+  capacity_adults integer // จำนวนผู้ใหญ่สูงสุดที่รองรับ
+  capacity_children integer // จำนวนเด็กสูงสุดที่รองรับ
+  max_occupancy integer // จำนวนคนรวมสูงสุดที่เข้าพักได้
   bed_type varchar // ประเภทเตียง เช่น Twin, Double, King
-  size_sq_m int // ขนาดห้องเป็นตารางเมตร
-  total_rooms int [not null] // จำนวนห้องทั้งหมดของประเภทนี้
+  size_sq_m integer // ขนาดห้องเป็นตารางเมตร
+  total_rooms integer [not null] // จำนวนห้องทั้งหมดของประเภทนี้
   status varchar [default: 'active'] // สถานะของห้องประเภทนี้ เช่น active, inactive
   sort_order integer [default: 0] // ลำดับการแสดงผลในหน้าเว็บ
   created_at timestamp // วันที่สร้างข้อมูล
@@ -169,9 +186,10 @@ Table room_types {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางรูปประเภทห้องพัก
 Table room_type_images {
-  id integer [primary key] // รหัสรูปภาพประเภทห้อง
-  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรูปภาพประเภทห้อง
+  room_type_id uuid [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
   image_url varchar [not null] // URL รูปภาพจริง
   thumbnail_url varchar // URL รูปย่อ
   is_cover boolean [default: false] // เป็นรูปปกของประเภทห้องหรือไม่
@@ -180,10 +198,11 @@ Table room_type_images {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางเชื่อมประเภทห้องกับสิ่งอำนวยความสะดวก
 Table room_type_facilities {
-  id integer [primary key] // รหัสรายการเชื่อมห้องประเภทกับ facility
-  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
-  facility_id integer [not null, ref: > facilities.id] // อ้างอิงสิ่งอำนวยความสะดวก
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการเชื่อมห้องประเภทกับ facility
+  room_type_id uuid [not null, ref: > room_types.id] // อ้างอิงประเภทห้อง
+  facility_id uuid [not null, ref: > facilities.id] // อ้างอิงสิ่งอำนวยความสะดวก
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 
@@ -192,9 +211,10 @@ Table room_type_facilities {
   }
 }
 
+// Purpose: ตารางราคาห้อง เก็บราคาและเงื่อนไขการขาย
 Table room_prices {
-  id integer [primary key] // รหัสราคา
-  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้องที่ราคานี้ใช้กับห้องนั้น
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสราคา
+  room_type_id uuid [not null, ref: > room_types.id] // อ้างอิงประเภทห้องที่ราคานี้ใช้กับห้องนั้น
   price decimal(10,2) [not null] // ราคาต่อคืน
   currency_code varchar [default: 'THB'] // สกุลเงิน เช่น THB
   start_date date [not null] // วันที่เริ่มใช้ราคา
@@ -204,10 +224,11 @@ Table room_prices {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางโปรโมชั่น เก็บแคมเปญส่วนลดของระบบ
 Table promotions {
-  id integer [primary key] // รหัสโปรโมชั่น
-  hotel_id integer [ref: > hotels.id] // อ้างอิงโรงแรม ถ้าโปรใช้ระดับโรงแรม
-  room_type_id integer [ref: > room_types.id] // อ้างอิงประเภทห้อง ถ้าโปรใช้เฉพาะบางห้อง
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสโปรโมชั่น
+  hotel_id uuid [ref: > hotels.id] // อ้างอิงโรงแรม ถ้าโปรใช้ระดับโรงแรม
+  room_type_id uuid [ref: > room_types.id] // อ้างอิงประเภทห้อง ถ้าโปรใช้เฉพาะบางห้อง
   name varchar // ชื่อโปรโมชั่น
   description varchar // รายละเอียดโปรโมชั่น
   discount_type varchar // ประเภทส่วนลด เช่น percent, fixed_price, fixed_amount
@@ -220,8 +241,9 @@ Table promotions {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางคูปองส่วนลดที่ลูกค้าใช้ได้
 Table coupons {
-  id integer [primary key] // รหัสคูปอง
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสคูปอง
   code varchar [unique, not null] // รหัสคูปองที่ผู้ใช้กรอก
   name varchar // ชื่อคูปอง
   description varchar // รายละเอียดคูปอง
@@ -239,18 +261,20 @@ Table coupons {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางประวัติการใช้คูปองต่อการจอง
 Table coupon_usages {
-  id integer [primary key] // รหัสประวัติการใช้คูปอง
-  coupon_id integer [not null, ref: > coupons.id] // อ้างอิงคูปองที่ถูกใช้
-  user_id integer [ref: > users.id] // อ้างอิงผู้ใช้ที่ใช้คูปอง
-  booking_id integer [ref: > bookings.id] // อ้างอิง booking ที่ใช้คูปองนี้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสประวัติการใช้คูปอง
+  coupon_id uuid [not null, ref: > coupons.id] // อ้างอิงคูปองที่ถูกใช้
+  user_id uuid [ref: > users.id] // อ้างอิงผู้ใช้ที่ใช้คูปอง
+  booking_id uuid [ref: > bookings.id] // อ้างอิง booking ที่ใช้คูปองนี้
   used_at timestamp // วันเวลาที่ใช้คูปอง
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางภาษี เก็บอัตราและเงื่อนไขการคิดภาษี
 Table taxes {
-  id integer [primary key] // รหัสภาษี
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสภาษี
   name varchar [not null] // ชื่อภาษี เช่น VAT, local tax
   type varchar [not null] // ประเภทภาษี เช่น percent, fixed
   value decimal(10,2) [not null] // ค่าอัตราภาษีหรือจำนวนเงินภาษี
@@ -259,8 +283,9 @@ Table taxes {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางค่าธรรมเนียมบริการที่คิดเพิ่มในคำสั่งซื้อ
 Table service_fees {
-  id integer [primary key] // รหัสค่าธรรมเนียมบริการ
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสค่าธรรมเนียมบริการ
   name varchar [not null] // ชื่อค่าธรรมเนียม เช่น service fee, resort fee
   type varchar [not null] // ประเภทค่าธรรมเนียม เช่น percent, fixed
   value decimal(10,2) [not null] // ค่าอัตราหรือจำนวนเงินของค่าธรรมเนียม
@@ -269,12 +294,13 @@ Table service_fees {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางการจองหลักของลูกค้า
 Table bookings {
-  id integer [primary key] // รหัสการจอง
-  user_id integer [ref: > users.id] // อ้างอิงผู้ใช้ที่เป็นเจ้าของการจอง
-  hotel_id integer [ref: > hotels.id] // อ้างอิงโรงแรมที่จอง
-  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้องหลักที่จอง
-  promotion_id integer [ref: > promotions.id] // อ้างอิงโปรโมชั่นที่ใช้กับ booking นี้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสการจอง
+  user_id uuid [ref: > users.id] // อ้างอิงผู้ใช้ที่เป็นเจ้าของการจอง
+  hotel_id uuid [ref: > hotels.id] // อ้างอิงโรงแรมที่จอง
+  room_type_id uuid [not null, ref: > room_types.id] // อ้างอิงประเภทห้องหลักที่จอง
+  promotion_id uuid [ref: > promotions.id] // อ้างอิงโปรโมชั่นที่ใช้กับ booking นี้
   booking_number varchar [unique, not null] // เลขอ้างอิงการจองสำหรับแสดงบนหน้าเว็บและอีเมล
   check_in date [not null] // วันที่เช็กอิน
   check_out date [not null] // วันที่เช็กเอาต์
@@ -307,10 +333,11 @@ Table bookings {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางห้องที่ผูกอยู่ในแต่ละรายการจอง
 Table booking_rooms {
-  id integer [primary key] // รหัสรายการห้องใน booking
-  booking_id integer [not null, ref: > bookings.id] // อ้างอิง booking เจ้าของรายการนี้
-  room_type_id integer [not null, ref: > room_types.id] // อ้างอิงประเภทห้องที่อยู่ใน booking
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการห้องใน booking
+  booking_id uuid [not null, ref: > bookings.id] // อ้างอิง booking เจ้าของรายการนี้
+  room_type_id uuid [not null, ref: > room_types.id] // อ้างอิงประเภทห้องที่อยู่ใน booking
   room_name_snapshot varchar // ชื่อห้อง ณ เวลาที่จอง เพื่อเก็บ snapshot
   quantity integer [not null, default: 1] // จำนวนห้องของ room type นี้ใน booking
   price_per_night decimal(10,2) // ราคาต่อคืนของห้องรายการนี้
@@ -320,9 +347,10 @@ Table booking_rooms {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางรายชื่อผู้เข้าพักของการจอง
 Table booking_guests {
-  id integer [primary key] // รหัสผู้เข้าพักใน booking
-  booking_id integer [not null, ref: > bookings.id] // อ้างอิง booking ที่ผู้เข้าพักคนนี้อยู่ในรายการ
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสผู้เข้าพักใน booking
+  booking_id uuid [not null, ref: > bookings.id] // อ้างอิง booking ที่ผู้เข้าพักคนนี้อยู่ในรายการ
   first_name varchar [not null] // ชื่อผู้เข้าพัก
   last_name varchar [not null] // นามสกุลผู้เข้าพัก
   guest_type varchar [not null] // ประเภทผู้เข้าพัก เช่น adult, child
@@ -330,11 +358,12 @@ Table booking_guests {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางส่วนลดที่ถูกใช้กับการจอง
 Table booking_discounts {
-  id integer [primary key] // รหัสรายการส่วนลดของ booking
-  booking_id integer [not null, ref: > bookings.id] // อ้างอิง booking ที่ได้รับส่วนลด
-  coupon_id integer [ref: > coupons.id] // อ้างอิงคูปองที่ใช้ ถ้ามี
-  promotion_id integer [ref: > promotions.id] // อ้างอิงโปรโมชั่นที่ใช้ ถ้ามี
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการส่วนลดของ booking
+  booking_id uuid [not null, ref: > bookings.id] // อ้างอิง booking ที่ได้รับส่วนลด
+  coupon_id uuid [ref: > coupons.id] // อ้างอิงคูปองที่ใช้ ถ้ามี
+  promotion_id uuid [ref: > promotions.id] // อ้างอิงโปรโมชั่นที่ใช้ ถ้ามี
   discount_type varchar // ประเภทส่วนลดที่ใช้จริง
   discount_value decimal(10,2) // ค่า discount ต้นฉบับ
   applied_amount decimal(10,2) // จำนวนเงินส่วนลดที่ถูกหักจริง
@@ -342,19 +371,21 @@ Table booking_discounts {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางประวัติการเปลี่ยนสถานะของการจอง
 Table booking_status_logs {
-  id integer [primary key] // รหัสประวัติการเปลี่ยนสถานะ booking
-  booking_id integer [not null, ref: > bookings.id] // อ้างอิง booking ที่มีการเปลี่ยนสถานะ
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสประวัติการเปลี่ยนสถานะ booking
+  booking_id uuid [not null, ref: > bookings.id] // อ้างอิง booking ที่มีการเปลี่ยนสถานะ
   old_status varchar // สถานะเดิมก่อนเปลี่ยน
   new_status varchar [not null] // สถานะใหม่หลังเปลี่ยน
-  changed_by integer [ref: > users.id] // ผู้ที่เป็นคนเปลี่ยนสถานะ
+  changed_by uuid [ref: > users.id] // ผู้ที่เป็นคนเปลี่ยนสถานะ
   changed_at timestamp // วันเวลาที่เปลี่ยนสถานะ
   note varchar // หมายเหตุประกอบการเปลี่ยนสถานะ
 }
 
+// Purpose: ตารางนโยบายโรงแรม เช่น การยกเลิกและเวลาเช็กอิน
 Table hotel_policies {
-  id integer [primary key] // รหัสนโยบายโรงแรม
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมเจ้าของนโยบาย
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสนโยบายโรงแรม
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรมเจ้าของนโยบาย
   check_in_policy text // นโยบายการเช็กอิน
   check_out_policy text // นโยบายการเช็กเอาต์
   cancellation_policy text // นโยบายการยกเลิก
@@ -366,12 +397,13 @@ Table hotel_policies {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางรีวิวและคะแนนจากผู้เข้าพัก
 Table reviews {
-  id integer [primary key] // รหัสรีวิว
-  user_id integer [not null, ref: > users.id] // อ้างอิงผู้ใช้ที่เขียนรีวิว
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกรีวิว
-  booking_id integer [ref: > bookings.id] // อ้างอิง booking ที่เกี่ยวข้องกับรีวิวนี้
-  rating int [not null] // คะแนนรีวิว 1-5
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรีวิว
+  user_id uuid [not null, ref: > users.id] // อ้างอิงผู้ใช้ที่เขียนรีวิว
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกรีวิว
+  booking_id uuid [ref: > bookings.id] // อ้างอิง booking ที่เกี่ยวข้องกับรีวิวนี้
+  rating integer [not null] // คะแนนรีวิว 1-5
   title varchar // หัวข้อรีวิว
   comment text // เนื้อหารีวิว
   stay_date date // วันที่เข้าพักที่เกี่ยวข้องกับรีวิว
@@ -384,10 +416,11 @@ Table reviews {
   deleted_at timestamp // วันที่ลบแบบ soft delete
 }
 
+// Purpose: ตารางรายการโปรดของผู้ใช้
 Table wishlists {
-  id integer [primary key] // รหัสรายการ wishlist
-  user_id integer [not null, ref: > users.id] // อ้างอิงผู้ใช้เจ้าของ wishlist
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกบันทึก
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการ wishlist
+  user_id uuid [not null, ref: > users.id] // อ้างอิงผู้ใช้เจ้าของ wishlist
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรมที่ถูกบันทึก
   created_at timestamp // วันที่เพิ่มเข้า wishlist
   updated_at timestamp // วันที่แก้ไขล่าสุด
   deleted_at timestamp // วันที่ลบแบบ soft delete
@@ -397,8 +430,9 @@ Table wishlists {
   }
 }
 
+// Purpose: ตารางวิธีชำระเงินที่ระบบรองรับ
 Table payment_methods {
-  id integer [primary key] // รหัสวิธีการชำระเงิน
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสวิธีการชำระเงิน
   code varchar [unique, not null] // code ภายในระบบ เช่น card, promptpay, pay_later
   name varchar [not null] // ชื่อที่แสดงบนหน้าเว็บ เช่น Credit Card, PromptPay QR
   is_active boolean [default: true] // วิธีชำระเงินนี้เปิดใช้งานอยู่หรือไม่
@@ -406,8 +440,9 @@ Table payment_methods {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางผู้ให้บริการเกตเวย์ชำระเงิน
 Table payment_gateways {
-  id integer [primary key] // รหัส payment gateway
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส payment gateway
   name varchar [not null] // ชื่อ gateway เช่น stripe, omise, manual
   code varchar [unique, not null] // code ภายในระบบสำหรับ gateway
   is_active boolean [default: true] // gateway นี้เปิดใช้งานอยู่หรือไม่
@@ -415,11 +450,12 @@ Table payment_gateways {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางธุรกรรมการชำระเงินของการจอง
 Table payments {
-  id integer [primary key] // รหัสการชำระเงิน
-  booking_id integer [not null, ref: > bookings.id] // อ้างอิง booking ที่การชำระเงินนี้สังกัด
-  payment_method_id integer [ref: > payment_methods.id] // อ้างอิงวิธีการชำระเงิน
-  payment_gateway_id integer [ref: > payment_gateways.id] // อ้างอิง gateway ที่ใช้ประมวลผล
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสการชำระเงิน
+  booking_id uuid [not null, ref: > bookings.id] // อ้างอิง booking ที่การชำระเงินนี้สังกัด
+  payment_method_id uuid [ref: > payment_methods.id] // อ้างอิงวิธีการชำระเงิน
+  payment_gateway_id uuid [ref: > payment_gateways.id] // อ้างอิง gateway ที่ใช้ประมวลผล
   payment_method varchar [not null] // วิธีชำระเงินแบบ snapshot เช่น card, transfer, cash, qr
   amount decimal(10,2) [not null] // จำนวนเงินที่ต้องชำระ
   currency_code varchar [default: 'THB'] // สกุลเงินที่ใช้จ่าย
@@ -440,24 +476,26 @@ Table payments {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางธุรกรรมการคืนเงินและสถานะการคืนเงิน
 Table refunds {
-  id integer [primary key] // รหัสรายการ refund
-  payment_id integer [not null, ref: > payments.id] // อ้างอิง payment ที่ถูก refund
-  booking_id integer [ref: > bookings.id] // อ้างอิง booking ที่เกี่ยวข้อง
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการ refund
+  payment_id uuid [not null, ref: > payments.id] // อ้างอิง payment ที่ถูก refund
+  booking_id uuid [ref: > bookings.id] // อ้างอิง booking ที่เกี่ยวข้อง
   amount decimal(10,2) [not null] // จำนวนเงินที่ refund
   reason varchar // เหตุผลในการ refund
   status varchar [default: 'pending'] // สถานะ refund เช่น pending, success, failed
   refund_ref varchar // เลขอ้างอิง refund จากระบบหรือ gateway
-  processed_by integer [ref: > users.id] // ผู้ที่ดำเนินการ refund
+  processed_by uuid [ref: > users.id] // ผู้ที่ดำเนินการ refund
   processed_at timestamp // วันเวลาที่ดำเนินการ refund
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางข้อมูลออกบิล/ใบกำกับภาษีของลูกค้า
 Table billing_profiles {
-  id integer [primary key] // รหัสข้อมูลออกบิล
-  user_id integer [ref: > users.id] // อ้างอิงผู้ใช้เจ้าของข้อมูลออกบิล
-  booking_id integer [ref: > bookings.id] // อ้างอิง booking ที่ใช้ข้อมูลออกบิลนี้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสข้อมูลออกบิล
+  user_id uuid [ref: > users.id] // อ้างอิงผู้ใช้เจ้าของข้อมูลออกบิล
+  booking_id uuid [ref: > bookings.id] // อ้างอิง booking ที่ใช้ข้อมูลออกบิลนี้
   company_name varchar // ชื่อบริษัทสำหรับออกใบกำกับ/ใบเสร็จ
   tax_number varchar // เลขประจำตัวผู้เสียภาษี
   address varchar // ที่อยู่สำหรับออกบิล
@@ -468,11 +506,12 @@ Table billing_profiles {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางใบแจ้งหนี้และเอกสารการเรียกเก็บเงิน
 Table invoices {
-  id integer [primary key] // รหัสเอกสารใบเสร็จ/ใบกำกับ
-  booking_id integer [ref: > bookings.id] // อ้างอิง booking ที่เอกสารนี้เกี่ยวข้อง
-  payment_id integer [ref: > payments.id] // อ้างอิง payment ที่เอกสารนี้ออกให้
-  billing_profile_id integer [ref: > billing_profiles.id] // อ้างอิงข้อมูลออกบิลที่ใช้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสเอกสารใบเสร็จ/ใบกำกับ
+  booking_id uuid [ref: > bookings.id] // อ้างอิง booking ที่เอกสารนี้เกี่ยวข้อง
+  payment_id uuid [ref: > payments.id] // อ้างอิง payment ที่เอกสารนี้ออกให้
+  billing_profile_id uuid [ref: > billing_profiles.id] // อ้างอิงข้อมูลออกบิลที่ใช้
   invoice_number varchar [unique] // เลขที่ใบเสร็จหรือใบกำกับ
   type varchar [default: 'receipt'] // ประเภทเอกสาร เช่น receipt, invoice, tax_invoice
   file_url varchar // URL ไฟล์ PDF หรือไฟล์เอกสาร
@@ -481,8 +520,9 @@ Table invoices {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางผู้สมัครรับข่าวสารอีเมล
 Table newsletter_subscribers {
-  id integer [primary key] // รหัสผู้สมัคร newsletter
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสผู้สมัคร newsletter
   email varchar [unique, not null] // อีเมลที่ใช้สมัครรับข่าวสาร
   status varchar [default: 'subscribed'] // สถานะการสมัคร เช่น subscribed, unsubscribed
   subscribed_at timestamp // วันเวลาที่สมัครรับข่าวสาร
@@ -491,8 +531,9 @@ Table newsletter_subscribers {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางฟีเจอร์เด่น/ข้อความจุดขายสำหรับหน้าเว็บ
 Table features {
-  id integer [primary key] // รหัส feature/static feature item
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส feature/static feature item
   title varchar [not null] // หัวข้อ เช่น Best Prices, Flexible Cancellation
   description text // รายละเอียดของ feature
   icon varchar // icon หรือรูปประกอบ
@@ -501,8 +542,9 @@ Table features {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางหน้าเนื้อหาแบบคงที่ เช่น about, terms
 Table pages {
-  id integer [primary key] // รหัสหน้า content
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสหน้า content
   slug varchar [unique, not null] // slug ของหน้า เช่น about, privacy, terms
   title varchar [not null] // ชื่อหน้า
   content text // เนื้อหาเต็มของหน้า
@@ -511,8 +553,9 @@ Table pages {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางช่องทางติดต่อฝ่ายซัพพอร์ต
 Table support_contacts {
-  id integer [primary key] // รหัสข้อมูลติดต่อ support
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสข้อมูลติดต่อ support
   email varchar // อีเมล support
   phone varchar // เบอร์โทร support
   line_id varchar // Line ID สำหรับติดต่อ
@@ -521,20 +564,22 @@ Table support_contacts {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางไฟล์อัปโหลดและข้อมูลเมทาดาทาไฟล์
 Table uploads {
-  id integer [primary key] // รหัสไฟล์อัปโหลด
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสไฟล์อัปโหลด
   file_name varchar [not null] // ชื่อไฟล์ต้นฉบับ
   file_url varchar [not null] // URL ไฟล์ที่อัปโหลดแล้ว
   file_type varchar // ประเภทไฟล์เชิงธุรกิจ เช่น image, pdf
   mime_type varchar // MIME type จริงของไฟล์ เช่น image/jpeg
   file_size integer // ขนาดไฟล์เป็น byte
-  uploaded_by integer [ref: > users.id] // ผู้ใช้งานที่อัปโหลดไฟล์
+  uploaded_by uuid [ref: > users.id] // ผู้ใช้งานที่อัปโหลดไฟล์
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางสถานที่ท่องเที่ยว
 Table attractions {
-  id integer [primary key] // รหัสสถานที่ท่องเที่ยว
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสสถานที่ท่องเที่ยว
   name varchar [not null] // ชื่อสถานที่
   description text // รายละเอียดสถานที่
   address varchar // ที่อยู่สถานที่
@@ -548,9 +593,10 @@ Table attractions {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางรูปภาพสถานที่ท่องเที่ยว
 Table attraction_images {
-  id integer [primary key] // รหัสรูปภาพสถานที่
-  attraction_id integer [not null, ref: > attractions.id] // อ้างอิงสถานที่เจ้าของรูป
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรูปภาพสถานที่
+  attraction_id uuid [not null, ref: > attractions.id] // อ้างอิงสถานที่เจ้าของรูป
   image_url varchar [not null] // URL รูปภาพจริง
   thumbnail_url varchar // URL รูปย่อ
   is_cover boolean [default: false] // เป็นรูปปกของสถานที่หรือไม่
@@ -559,10 +605,11 @@ Table attraction_images {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางเชื่อมโรงแรมกับสถานที่ท่องเที่ยวใกล้เคียง
 Table hotel_attractions {
-  id integer [primary key] // รหัสรายการเชื่อมโรงแรมกับสถานที่ท่องเที่ยว
-  hotel_id integer [not null, ref: > hotels.id] // อ้างอิงโรงแรม
-  attraction_id integer [not null, ref: > attractions.id] // อ้างอิงสถานที่ท่องเที่ยว
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสรายการเชื่อมโรงแรมกับสถานที่ท่องเที่ยว
+  hotel_id uuid [not null, ref: > hotels.id] // อ้างอิงโรงแรม
+  attraction_id uuid [not null, ref: > attractions.id] // อ้างอิงสถานที่ท่องเที่ยว
   distance_km decimal(5,2) // ระยะทางจากโรงแรมถึงสถานที่ หน่วยกิโลเมตร
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
@@ -572,9 +619,10 @@ Table hotel_attractions {
   }
 }
 
+// Purpose: ตารางดีลเร่งด่วนช่วงเวลาจำกัด
 Table flash_deals {
-  id integer [primary key] // รหัส flash deal
-  hotel_id integer [ref: > hotels.id] // อ้างอิงโรงแรมที่เข้าร่วม flash deal
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส flash deal
+  hotel_id uuid [ref: > hotels.id] // อ้างอิงโรงแรมที่เข้าร่วม flash deal
   title varchar [not null] // ชื่อแคมเปญ flash deal
   description varchar // รายละเอียดของดีล
   discount_percent decimal(5,2) // เปอร์เซ็นต์ส่วนลดของดีล
@@ -585,8 +633,9 @@ Table flash_deals {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางแบนเนอร์ของแต่ละหน้าและข้อมูล CTA
 Table banners {
-  id integer [primary key] // รหัสแบนเนอร์
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสแบนเนอร์
   page_key varchar [not null] // key ของหน้าที่ใช้แบนเนอร์ เช่น home, experiences, travel_guides
   title varchar // หัวข้อแบนเนอร์
   subtitle varchar // ข้อความรองของแบนเนอร์
@@ -599,35 +648,39 @@ Table banners {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางบันทึกการกระทำของผู้ใช้งานหลังบ้าน
 Table audit_logs {
-  id integer [primary key] // รหัส audit log
-  user_id integer [ref: > users.id] // ผู้ใช้ที่ทำ action นี้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส audit log
+  user_id uuid [ref: > users.id] // ผู้ใช้ที่ทำ action นี้
   entity_type varchar [not null] // ประเภทข้อมูลที่ถูกกระทำ เช่น coupon, promotion, hotel, booking
-  entity_id integer // id ของ record ที่ถูกกระทำ
+  entity_id uuid // id ของ record ที่ถูกกระทำ
   action varchar [not null] // การกระทำ เช่น create, update, delete, publish
   before_data text // ข้อมูลก่อนแก้ไข อาจเก็บเป็น JSON string
   after_data text // ข้อมูลหลังแก้ไข อาจเก็บเป็น JSON string
   created_at timestamp // วันที่สร้าง log
 }
 
+// Purpose: ตารางเป้าหมายรายได้รายเดือน
 Table revenue_targets {
-  id integer [primary key] // รหัสเป้ารายได้
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสเป้ารายได้
   month varchar [not null] // เดือนของเป้าหมาย เช่น 2026-04
   target_amount decimal(10,2) [not null] // ยอดรายได้เป้าหมายของเดือนนั้น
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางตั้งค่าระบบแบบ key-value
 Table system_settings {
-  id integer [primary key] // รหัส setting
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส setting
   setting_key varchar [unique, not null] // key ของ setting เช่น default_currency
   setting_value text // ค่าของ setting อาจเก็บเป็น text หรือ JSON string
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางตั้งค่าการแจ้งเตือนระดับระบบ
 Table system_notification_settings {
-  id integer [primary key] // รหัสการตั้งค่าการแจ้งเตือนระบบ
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสการตั้งค่าการแจ้งเตือนระบบ
   email_enabled boolean [default: true] // เปิดส่งอีเมลแจ้งเตือนหรือไม่
   push_enabled boolean [default: false] // เปิด push notification หรือไม่
   sms_enabled boolean [default: false] // เปิดส่ง SMS หรือไม่
@@ -635,9 +688,10 @@ Table system_notification_settings {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางบัญชี merchant ของเกตเวย์ชำระเงิน
 Table merchant_accounts {
-  id integer [primary key] // รหัสบัญชี merchant
-  payment_gateway_id integer [ref: > payment_gateways.id] // อ้างอิง gateway ที่บัญชีนี้สังกัด
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสบัญชี merchant
+  payment_gateway_id uuid [ref: > payment_gateways.id] // อ้างอิง gateway ที่บัญชีนี้สังกัด
   merchant_name varchar // ชื่อ merchant account
   merchant_id varchar // merchant id จากผู้ให้บริการ gateway
   status varchar [default: 'active'] // สถานะบัญชี merchant
@@ -645,8 +699,9 @@ Table merchant_accounts {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางกฎการจองระดับระบบ
 Table booking_rules {
-  id integer [primary key] // รหัสกฎของระบบ booking
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสกฎของระบบ booking
   allow_pay_later boolean [default: false] // อนุญาตให้จ่ายทีหลังหรือไม่
   auto_cancel_pending_minutes integer [default: 30] // กี่นาทีให้ auto cancel booking ที่ยังไม่จ่าย
   refund_policy_note text // หมายเหตุหรือนโยบาย refund แบบข้อความ
@@ -654,18 +709,20 @@ Table booking_rules {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางบันทึกผลทดสอบการเชื่อมต่อ payment gateway
 Table gateway_test_logs {
-  id integer [primary key] // รหัส log การทดสอบ gateway
-  payment_gateway_id integer [ref: > payment_gateways.id] // อ้างอิง gateway ที่ถูกทดสอบ
-  tested_by integer [ref: > users.id] // ผู้ใช้ที่กดทดสอบ
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส log การทดสอบ gateway
+  payment_gateway_id uuid [ref: > payment_gateways.id] // อ้างอิง gateway ที่ถูกทดสอบ
+  tested_by uuid [ref: > users.id] // ผู้ใช้ที่กดทดสอบ
   status varchar // ผลการทดสอบ เช่น success, failed
   response_message varchar // ข้อความตอบกลับจากการทดสอบ
   tested_at timestamp // เวลาที่ทดสอบจริง
   created_at timestamp // วันที่สร้างข้อมูล
 }
 
+// Purpose: ตารางสกุลเงินที่ระบบรองรับ
 Table currencies {
-  id integer [primary key] // รหัสสกุลเงิน
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัสสกุลเงิน
   code varchar [unique, not null] // code สกุลเงิน เช่น THB, USD
   name varchar // ชื่อสกุลเงิน
   symbol varchar // สัญลักษณ์สกุลเงิน เช่น ฿, $
@@ -673,8 +730,9 @@ Table currencies {
   updated_at timestamp // วันที่แก้ไขล่าสุด
 }
 
+// Purpose: ตารางโซนเวลาที่ระบบรองรับ
 Table timezones {
-  id integer [primary key] // รหัส timezone
+  id uuid [primary key, default: `gen_random_uuid()`] // รหัส timezone
   name varchar [unique, not null] // ชื่อ timezone เช่น Asia/Bangkok
   utc_offset varchar // ค่า offset เช่น +07:00
   created_at timestamp // วันที่สร้างข้อมูล

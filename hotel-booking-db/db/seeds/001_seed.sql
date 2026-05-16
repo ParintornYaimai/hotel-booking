@@ -295,22 +295,6 @@ VALUES
   (seed_uuid(5), seed_uuid(1), seed_uuid(4), seed_uuid(6), 5, 'Excellent sea view and nice breakfast.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO favorite_hotels (
-  id,
-  user_id,
-  hotel_id,
-  created_at,
-  updated_at
-)
-VALUES
-  (seed_uuid(1), seed_uuid(1), seed_uuid(1), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(2), seed_uuid(1), seed_uuid(3), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(3), seed_uuid(1), seed_uuid(4), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(4), seed_uuid(2), seed_uuid(2), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(5), seed_uuid(2), seed_uuid(4), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(6), seed_uuid(3), seed_uuid(1), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-ON CONFLICT DO NOTHING;
-
 INSERT INTO hotel_facilities (
   id,
   hotel_id,
