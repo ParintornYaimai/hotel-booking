@@ -22,13 +22,6 @@ export class LoginController {
     }
 
     const loginResult = await this.useCase.execute(input);
-    if (!loginResult) {
-      reply.code(401).send({
-        message: 'Invalid email or password'
-      });
-      return;
-    }
-
     reply.send(loginResult);
   }
 }

@@ -36,6 +36,9 @@ test('auth login with invalid credentials', async (t) => {
   });
 
   assert.equal(response.statusCode, 401);
+  const body = response.json();
+  assert.equal(body.message, 'Invalid email or password');
+  assert.equal(body.code, 'INVALID_CREDENTIALS');
 });
 
 test('auth login validates payload shape', async (t) => {

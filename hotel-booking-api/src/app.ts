@@ -8,6 +8,7 @@ import { userRoutes } from './modules/users/interface/http/routes/user.route';
 import { loadEnv } from './shared/config/env';
 import { databasePlugin } from './shared/plugins/database-plugin';
 import { corePlugins } from './shared/plugins/core-plugins';
+import { setupErrorHandling } from './shared/plugins/error-handler-plugin';
 
 export interface BuildAppOptions extends FastifyServerOptions {
   env?: NodeJS.ProcessEnv;
@@ -48,6 +49,7 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
     logger: fastifyOptions.logger ?? buildLoggerOptions(env)
   });
 
+  setupErrorHandling(app);
   app.register(corePlugins, { env });
   app.register(databasePlugin, { env });
   app.register(systemRoutes);

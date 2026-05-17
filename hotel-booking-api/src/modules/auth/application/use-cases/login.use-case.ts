@@ -1,14 +1,17 @@
 import type { LoginInput } from '../dto/login.dto';
 import type { LoginResult } from '../dto/login-result.dto';
 import type { AuthRepository } from '../../domain/repositories/auth.repository';
+import { UnauthorizedError } from '../../../../shared/errors';
 
 export class LoginUseCase {
   constructor(private readonly repository: AuthRepository) {}
 
-  async execute(input: LoginInput): Promise<LoginResult | null> {
+  async execute(input: LoginInput): Promise<LoginResult> {
     const user = await this.repository.findByEmail(input.email);
     if (!user) {
-      return null;
+      throw new UnauthorizedError('Invalid email or password', {
+        code: 'INVALID_CREDENTIALS'
+      });
     }
 
     const isValidPassword = await this.repository.verifyPassword(
@@ -17,7 +20,9 @@ export class LoginUseCase {
     );
 
     if (!isValidPassword) {
-      return null;
+      throw new UnauthorizedError('Invalid email or password', {
+        code: 'INVALID_CREDENTIALS'
+      });
     }
 
     return {

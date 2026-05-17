@@ -31,3 +31,18 @@ test('users by id returns one user', async (t) => {
   const user = response.json();
   assert.equal(user.id, 'user_1');
 });
+
+test('users by id returns not found error payload', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'GET',
+    url: '/users/user_missing'
+  });
+
+  assert.equal(response.statusCode, 404);
+  const body = response.json();
+  assert.equal(body.message, 'User not found');
+  assert.equal(body.code, 'USER_NOT_FOUND');
+});

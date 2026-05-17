@@ -74,3 +74,24 @@ test('create booking validates payload shape', async (t) => {
   assert.equal(body.message, 'Invalid booking payload');
   assert.equal(Array.isArray(body.errors), true);
 });
+
+test('create booking returns conflict for invalid date range', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/bookings',
+    payload: {
+      userId: 'user_1',
+      hotelId: 'hotel_2',
+      checkInDate: '2026-07-12',
+      checkOutDate: '2026-07-10'
+    }
+  });
+
+  assert.equal(response.statusCode, 409);
+  const body = response.json();
+  assert.equal(body.message, 'Check-out date must be after check-in date');
+  assert.equal(body.code, 'BOOKING_DATE_CONFLICT');
+});

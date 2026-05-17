@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import type { Pool } from 'pg';
 
+import { NotFoundError } from '../../../../shared/errors';
 import type { Booking, CreateBookingInput } from '../../domain/entities/booking';
 import type {
   BookingFilters,
@@ -68,9 +69,12 @@ export class PgBookingRepository implements BookingRepository {
     );
 
     if (roomTypeResult.rowCount === 0) {
-      throw new Error(
-        `Cannot create booking: no room type found for hotel ${input.hotelId}`
-      );
+      throw new NotFoundError('Cannot create booking: room type not found', {
+        code: 'ROOM_TYPE_NOT_FOUND',
+        details: {
+          hotelId: input.hotelId
+        }
+      });
     }
 
     const roomTypeId = roomTypeResult.rows[0].id;

@@ -19,13 +19,6 @@ export class GetHotelByIdController {
     }
 
     const hotel = await this.useCase.execute(params.hotelId);
-    if (!hotel) {
-      reply.code(404).send({
-        message: 'Hotel not found'
-      });
-      return;
-    }
-
     reply.send(hotel);
   }
 }

@@ -21,13 +21,6 @@ export class CreateBookingController {
     }
 
     const createdBooking = await this.useCase.execute(input);
-    if (!createdBooking) {
-      reply.code(400).send({
-        message: 'Invalid booking dates'
-      });
-      return;
-    }
-
     reply.code(201).send(createdBooking);
   }
 }

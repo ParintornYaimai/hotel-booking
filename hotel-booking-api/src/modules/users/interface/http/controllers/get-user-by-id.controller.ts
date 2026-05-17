@@ -19,13 +19,6 @@ export class GetUserByIdController {
     }
 
     const user = await this.useCase.execute(params.userId);
-    if (!user) {
-      reply.code(404).send({
-        message: 'User not found'
-      });
-      return;
-    }
-
     reply.send(user);
   }
 }
