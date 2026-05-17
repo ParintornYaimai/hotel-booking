@@ -70,6 +70,7 @@ Table user_sessions {
   ip_address varchar // IP ที่ใช้ login
   user_agent varchar // ข้อมูล browser/device
   last_active_at timestamp // เวลาที่มี activity ล่าสุด
+  revoked_at timestamp // เวลาที่ session ถูก revoke
   expires_at timestamp // เวลาหมดอายุ session
   created_at timestamp // วันที่สร้างข้อมูล
   updated_at timestamp // วันที่แก้ไขล่าสุด

@@ -477,15 +477,16 @@ INSERT INTO user_sessions (
   ip_address,
   user_agent,
   last_active_at,
+  revoked_at,
   expires_at,
   created_at,
   updated_at
 )
 VALUES
-  (seed_uuid(1), seed_uuid(1), 'sess-0001', '127.0.0.1', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(2), seed_uuid(2), 'sess-0002', '127.0.0.2', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(3), seed_uuid(3), 'sess-0003', '127.0.0.3', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  (seed_uuid(4), seed_uuid(4), 'sess-0004', '127.0.0.4', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  (seed_uuid(1), seed_uuid(1), 'sess-0001', '127.0.0.1', 'SeedAgent/1.0', CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (seed_uuid(2), seed_uuid(2), 'sess-0002', '127.0.0.2', 'SeedAgent/1.0', CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (seed_uuid(3), seed_uuid(3), 'sess-0003', '127.0.0.3', 'SeedAgent/1.0', CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  (seed_uuid(4), seed_uuid(4), 'sess-0004', '127.0.0.4', 'SeedAgent/1.0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP - INTERVAL '1 hour', CURRENT_TIMESTAMP + INTERVAL '1 day', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO destinations (

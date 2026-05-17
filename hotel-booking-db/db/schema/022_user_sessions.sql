@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   ip_address varchar,
   user_agent varchar,
   last_active_at timestamp,
+  revoked_at timestamp,
   expires_at timestamp,
   created_at timestamp,
   updated_at timestamp
