@@ -38,3 +38,39 @@ test('create booking returns 201', async (t) => {
   assert.equal(booking.userId, 'user_1');
   assert.equal(booking.hotelId, 'hotel_2');
 });
+
+test('bookings list validates query string', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'GET',
+    url: '/bookings?userId='
+  });
+
+  assert.equal(response.statusCode, 400);
+  const body = response.json();
+  assert.equal(body.message, 'Invalid query string');
+  assert.equal(Array.isArray(body.errors), true);
+});
+
+test('create booking validates payload shape', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/bookings',
+    payload: {
+      userId: 'user_1',
+      hotelId: '',
+      checkInDate: 'not-a-date',
+      checkOutDate: '2026-07-12'
+    }
+  });
+
+  assert.equal(response.statusCode, 400);
+  const body = response.json();
+  assert.equal(body.message, 'Invalid booking payload');
+  assert.equal(Array.isArray(body.errors), true);
+});

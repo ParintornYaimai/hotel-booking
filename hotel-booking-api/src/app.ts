@@ -2,6 +2,7 @@ import Fastify, { type FastifyInstance, type FastifyServerOptions } from 'fastif
 
 import { authRoutes } from './modules/auth/interface/http/routes/auth.route';
 import { bookingRoutes } from './modules/bookings/interface/http/routes/booking.route';
+import { hotelRoutes } from './modules/hotels/interface/http/routes/hotel.route';
 import { systemRoutes } from './modules/system/interface/http/routes/system.route';
 import { userRoutes } from './modules/users/interface/http/routes/user.route';
 import { loadEnv } from './shared/config/env';
@@ -53,6 +54,7 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
   app.register(authRoutes, { prefix: '/auth' });
   app.register(userRoutes, { prefix: '/users' });
   app.register(bookingRoutes, { prefix: '/bookings' });
+  app.register(hotelRoutes, { prefix: '/hotels' });
 
   return app;
 }

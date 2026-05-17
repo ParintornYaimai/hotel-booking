@@ -1,12 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { z } from 'zod';
 
 import type { LoginUseCase } from '../../../application/use-cases/login.use-case';
-
-const loginBodySchema = z.object({
-  email: z.email(),
-  password: z.string().min(6)
-});
+import { loginBodySchema } from '../schemas/login.schema';
+import { validateInput } from '../../../../../shared/validation/validate-input';
 
 type LoginRequest = FastifyRequest<{ Body: unknown }>;
 
@@ -14,16 +10,18 @@ export class LoginController {
   constructor(private readonly useCase: LoginUseCase) {}
 
   async handle(request: LoginRequest, reply: FastifyReply): Promise<void> {
-    const parsedBody = loginBodySchema.safeParse(request.body);
-
-    if (!parsedBody.success) {
-      reply.code(400).send({
-        message: 'Invalid login payload'
-      });
+    const input = validateInput({
+      schema: loginBodySchema,
+      input: request.body,
+      reply,
+      message: 'Invalid login payload'
+    });
+    
+    if (!input) {
       return;
     }
 
-    const loginResult = await this.useCase.execute(parsedBody.data);
+    const loginResult = await this.useCase.execute(input);
     if (!loginResult) {
       reply.code(401).send({
         message: 'Invalid email or password'

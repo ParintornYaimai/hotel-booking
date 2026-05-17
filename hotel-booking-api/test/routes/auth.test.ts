@@ -37,3 +37,22 @@ test('auth login with invalid credentials', async (t) => {
 
   assert.equal(response.statusCode, 401);
 });
+
+test('auth login validates payload shape', async (t) => {
+  const app = await build();
+  t.after(() => app.close());
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/auth/login',
+    payload: {
+      email: 'invalid-email',
+      password: '123'
+    }
+  });
+
+  assert.equal(response.statusCode, 400);
+  const body = response.json();
+  assert.equal(body.message, 'Invalid login payload');
+  assert.equal(Array.isArray(body.errors), true);
+});

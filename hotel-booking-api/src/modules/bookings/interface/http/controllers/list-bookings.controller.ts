@@ -1,25 +1,24 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { z } from 'zod';
 
 import type { ListBookingsUseCase } from '../../../application/use-cases/list-bookings.use-case';
-
-const bookingsQuerySchema = z.object({
-  userId: z.string().min(1).optional()
-});
+import { validateInput } from '../../../../../shared/validation/validate-input';
+import { listBookingsQuerySchema } from '../schemas/list-bookings.schema';
 
 export class ListBookingsController {
   constructor(private readonly useCase: ListBookingsUseCase) {}
 
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const parsedQuery = bookingsQuerySchema.safeParse(request.query);
-    if (!parsedQuery.success) {
-      reply.code(400).send({
-        message: 'Invalid query string'
-      });
+    const query = validateInput({
+      schema: listBookingsQuerySchema,
+      input: request.query,
+      reply,
+      message: 'Invalid query string'
+    });
+    if (!query) {
       return;
     }
 
-    const bookings = await this.useCase.execute(parsedQuery.data);
+    const bookings = await this.useCase.execute(query);
     reply.send(bookings);
   }
 }
