@@ -44,7 +44,6 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
   { env }
 ) => {
   if (!env.DB_ENABLED) {
-    app.decorate('db', null);
     app.log.info('PostgreSQL disabled (`DB_ENABLED=false`)');
     return;
   }
