@@ -2,15 +2,12 @@ import type { FastifyPluginAsync } from 'fastify';
 
 import { GetUserByIdUseCase } from '../../../application/use-cases/get-user-by-id.use-case';
 import { ListUsersUseCase } from '../../../application/use-cases/list-users.use-case';
-import { InMemoryUserRepository } from '../../../infrastructure/repositories/in-memory-user.repository';
 import { PgUserRepository } from '../../../infrastructure/repositories/pg-user.repository';
 import { GetUserByIdController } from '../controllers/get-user-by-id.controller';
 import { ListUsersController } from '../controllers/list-users.controller';
 
 export const userRoutes: FastifyPluginAsync = async (app) => {
-  const repository = app.db
-    ? new PgUserRepository(app.db)
-    : new InMemoryUserRepository();
+  const repository = new PgUserRepository(app.db);
   const listUsersUseCase = new ListUsersUseCase(repository);
   const getUserByIdUseCase = new GetUserByIdUseCase(repository);
 

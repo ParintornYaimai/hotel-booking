@@ -1,0 +1,5 @@
+interface:
+  display_name: "Hotel Booking API"
+  short_description: "Build and maintain Fastify clean-architecture backend"
+  default_prompt: "Use $hotel-booking-api to implement or update endpoint logic in hotel-booking-api with matching tests and type checks."
+

@@ -7,8 +7,7 @@ export async function build(): Promise<FastifyInstance> {
     logger: false,
     env: {
       NODE_ENV: 'test',
-      LOG_LEVEL: 'silent',
-      DB_ENABLED: 'false'
+      LOG_LEVEL: 'silent'
     }
   });
 

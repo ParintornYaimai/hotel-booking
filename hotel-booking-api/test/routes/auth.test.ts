@@ -18,7 +18,9 @@ test('auth login with valid credentials', async (t) => {
 
   assert.equal(response.statusCode, 200);
   const body = response.json();
-  assert.equal(body.user.id, 'user_1');
+  assert.equal(body.user.email, 'demo@hotel-booking.local');
+  assert.equal(typeof body.user.id, 'string');
+  assert.equal(body.user.id.length > 0, true);
   assert.equal(body.tokens.tokenType, 'Bearer');
 });
 

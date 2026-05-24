@@ -2,15 +2,12 @@ import type { FastifyPluginAsync } from 'fastify';
 
 import { GetHotelByIdUseCase } from '../../../application/use-cases/get-hotel-by-id.use-case';
 import { ListHotelsUseCase } from '../../../application/use-cases/list-hotels.use-case';
-import { InMemoryHotelRepository } from '../../../infrastructure/repositories/in-memory-hotel.repository';
 import { PgHotelRepository } from '../../../infrastructure/repositories/pg-hotel.repository';
 import { GetHotelByIdController } from '../controllers/get-hotel-by-id.controller';
 import { ListHotelsController } from '../controllers/list-hotels.controller';
 
 export const hotelRoutes: FastifyPluginAsync = async (app) => {
-  const repository = app.db
-    ? new PgHotelRepository(app.db)
-    : new InMemoryHotelRepository();
+  const repository = new PgHotelRepository(app.db);
   const listHotelsUseCase = new ListHotelsUseCase(repository);
   const getHotelByIdUseCase = new GetHotelByIdUseCase(repository);
 

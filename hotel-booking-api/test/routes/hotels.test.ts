@@ -22,14 +22,23 @@ test('hotels by id returns one hotel', async (t) => {
   const app = await build();
   t.after(() => app.close());
 
+  const listResponse = await app.inject({
+    method: 'GET',
+    url: '/hotels'
+  });
+  assert.equal(listResponse.statusCode, 200);
+  const hotels = listResponse.json();
+  const existingHotelId = hotels[0]?.id;
+  assert.equal(typeof existingHotelId, 'string');
+
   const response = await app.inject({
     method: 'GET',
-    url: '/hotels/hotel_1'
+    url: `/hotels/${existingHotelId}`
   });
 
   assert.equal(response.statusCode, 200);
   const hotel = response.json();
-  assert.equal(hotel.id, 'hotel_1');
+  assert.equal(hotel.id, existingHotelId);
 });
 
 test('hotels by id returns not found error payload', async (t) => {

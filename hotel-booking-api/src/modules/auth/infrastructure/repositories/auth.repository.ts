@@ -1,4 +1,5 @@
 import type { Pool } from 'pg';
+import bcrypt from 'bcryptjs';
 
 import type { AuthTokens } from '../../domain/entities/auth-tokens';
 import type { AuthUser } from '../../domain/entities/auth-user';
@@ -45,8 +46,11 @@ export class AuthRepository implements AuthRepositoryPort {
     plainPassword: string,
     passwordHash: string
   ): Promise<boolean> {
-    // Starter logic: replace with bcrypt/argon2 in production.
-    return plainPassword === passwordHash;
+    try {
+      return await bcrypt.compare(plainPassword, passwordHash);
+    } catch {
+      return false;
+    }
   }
 
   issueTokens(user: AuthUser): AuthTokens {

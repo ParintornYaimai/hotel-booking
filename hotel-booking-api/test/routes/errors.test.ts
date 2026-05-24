@@ -26,8 +26,7 @@ test('unhandled error returns standard 500 payload', async (t) => {
     logger: false,
     env: {
       NODE_ENV: 'test',
-      LOG_LEVEL: 'silent',
-      DB_ENABLED: 'false'
+      LOG_LEVEL: 'silent'
     }
   });
   app.get('/_test/error', async () => {
@@ -52,8 +51,7 @@ test('application error returns mapped payload', async (t) => {
     logger: false,
     env: {
       NODE_ENV: 'test',
-      LOG_LEVEL: 'silent',
-      DB_ENABLED: 'false'
+      LOG_LEVEL: 'silent'
     }
   });
   app.get('/_test/app-error', async () => {
