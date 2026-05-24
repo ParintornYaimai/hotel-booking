@@ -7,7 +7,7 @@ on:
     paths:
       - "hotel-booking-api/**"
       - ".github/workflows/deploy.yml"
-  workflow_dispatch:
+  workflow_dispatch: 
 
 permissions:
   contents: read

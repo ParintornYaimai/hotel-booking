@@ -2,15 +2,12 @@ import type { FastifyPluginAsync } from 'fastify';
 
 import { CreateBookingUseCase } from '../../../application/use-cases/create-booking.use-case';
 import { ListBookingsUseCase } from '../../../application/use-cases/list-bookings.use-case';
-import { InMemoryBookingRepository } from '../../../infrastructure/repositories/in-memory-booking.repository';
 import { PgBookingRepository } from '../../../infrastructure/repositories/pg-booking.repository';
 import { CreateBookingController } from '../controllers/create-booking.controller';
 import { ListBookingsController } from '../controllers/list-bookings.controller';
 
 export const bookingRoutes: FastifyPluginAsync = async (app) => {
-  const repository = app.db
-    ? new PgBookingRepository(app.db)
-    : new InMemoryBookingRepository();
+  const repository = new PgBookingRepository(app.db);
   const listBookingsUseCase = new ListBookingsUseCase(repository);
   const createBookingUseCase = new CreateBookingUseCase(repository);
 

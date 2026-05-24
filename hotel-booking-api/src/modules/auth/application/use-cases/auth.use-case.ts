@@ -1,12 +1,13 @@
-import type { LoginInput } from '../dto/login.dto';
-import type { LoginResult } from '../dto/login-result.dto';
-import type { AuthRepository } from '../../domain/repositories/auth.repository';
+import type { LoginInput } from '../dto/auth.dto';
+import type { LoginResult } from '../dto/auth.dto';
+import type { AuthUseCasePort } from '../ports/auth-use-case.port';
+import type { AuthRepositoryPort } from '../../domain/repositories/auth.repository';
 import { UnauthorizedError } from '../../../../shared/errors';
 
-export class LoginUseCase {
-  constructor(private readonly repository: AuthRepository) {}
+export class AuthUseCase implements AuthUseCasePort {
+  constructor(private readonly repository: AuthRepositoryPort) {}
 
-  async execute(input: LoginInput): Promise<LoginResult> {
+  async login(input: LoginInput): Promise<LoginResult> {
     const user = await this.repository.findByEmail(input.email);
     if (!user) {
       throw new UnauthorizedError('Invalid email or password', {

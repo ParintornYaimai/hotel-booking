@@ -1,15 +1,22 @@
 import type { FastifyPluginAsync } from 'fastify';
 
-import { LoginUseCase } from '../../../application/use-cases/login.use-case';
-import { InMemoryAuthRepository } from '../../../infrastructure/repositories/in-memory-auth.repository';
-import { LoginController } from '../controllers/login.controller';
+import { AuthUseCase } from '../../../application/use-cases/auth.use-case';
+import { AuthRepository } from '../../../infrastructure/repositories/auth.repository';
+import { AuthController } from '../controllers/auth.controller';
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
-  const repository = new InMemoryAuthRepository();
-  const loginUseCase = new LoginUseCase(repository);
-  const loginController = new LoginController(loginUseCase);
+  const repository = new AuthRepository(app.db);
+  const loginUseCase = new AuthUseCase(repository);
+  const authController = new AuthController(loginUseCase);
 
-  app.post('/login', async (request, reply) =>
-    loginController.handle(request, reply)
+  app.post('/register', async (req, reply) =>
+    authController.register(req, reply)
+  );
+  app.post('/login', async (req, reply) => authController.login(req, reply));
+  app.delete('/logout', async (req, reply) =>
+    authController.logOut(req, reply)
+  );
+  app.post('/access_token', async (req, reply) =>
+    authController.accessToken(req, reply)
   );
 };

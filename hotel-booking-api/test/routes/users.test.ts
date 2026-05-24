@@ -22,14 +22,23 @@ test('users by id returns one user', async (t) => {
   const app = await build();
   t.after(() => app.close());
 
+  const listResponse = await app.inject({
+    method: 'GET',
+    url: '/users'
+  });
+  assert.equal(listResponse.statusCode, 200);
+  const users = listResponse.json();
+  const existingUserId = users[0]?.id;
+  assert.equal(typeof existingUserId, 'string');
+
   const response = await app.inject({
     method: 'GET',
-    url: '/users/user_1'
+    url: `/users/${existingUserId}`
   });
 
   assert.equal(response.statusCode, 200);
   const user = response.json();
-  assert.equal(user.id, 'user_1');
+  assert.equal(user.id, existingUserId);
 });
 
 test('users by id returns not found error payload', async (t) => {
