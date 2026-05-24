@@ -24,18 +24,18 @@ jobs:
 
       - name: Validate environment secret
         env:
-          API_ENV_FILE: ${{ secrets.API_ENV_FILE }}
+          API_ENV_FILE_B64: ${{ secrets.API_ENV_FILE_B64 }}
         run: |
-          if [ -z "${API_ENV_FILE}" ]; then
-            echo "Missing required secret: API_ENV_FILE"
+          if [ -z "${API_ENV_FILE_B64}" ]; then
+            echo "Missing required secret: API_ENV_FILE_B64"
             exit 1
           fi
 
-      - name: Write API .env from secret
+      - name: Write API .env from base64 secret
+        env:
+          API_ENV_FILE_B64: ${{ secrets.API_ENV_FILE_B64 }}
         run: |
-          cat > hotel-booking-api/.env << 'EOF'
-          ${{ secrets.API_ENV_FILE }}
-          EOF
+          printf '%s' "${API_ENV_FILE_B64}" | base64 -d > hotel-booking-api/.env
           chmod 600 hotel-booking-api/.env
 
       - name: Deploy
