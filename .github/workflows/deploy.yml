@@ -1,0 +1,22 @@
+name: Deploy API
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "hotel-booking-api/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          docker compose -f hotel-booking-api/docker-compose.yml down --remove-orphans
+          docker compose -f hotel-booking-api/docker-compose.yml up -d --build

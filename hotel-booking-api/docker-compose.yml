@@ -1,0 +1,11 @@
+services:
+  api:
+    build: .
+    container_name: hotel-booking-api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
