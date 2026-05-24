@@ -1,0 +1,126 @@
+name: CI API
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "hotel-booking-api/**"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/deploy.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hotel-booking-api/**"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hotel-booking-api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: hotel-booking-api/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  promote-dev-to-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    needs: api-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Create or update PR dev -> main and enable auto-merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const base = 'main';
+            const headBranch = 'dev';
+            const head = `${owner}:${headBranch}`;
+
+            const compare = await github.rest.repos.compareCommitsWithBasehead({
+              owner,
+              repo,
+              basehead: `${base}...${headBranch}`
+            });
+
+            if (compare.data.status === 'identical') {
+              core.info('No changes between dev and main. Skipping PR creation.');
+              return;
+            }
+
+            const existing = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              base,
+              head,
+              per_page: 1
+            });
+
+            let pr = existing.data[0];
+
+            if (!pr) {
+              const created = await github.rest.pulls.create({
+                owner,
+                repo,
+                title: 'chore: promote dev to main',
+                head: headBranch,
+                base,
+                body: 'Automated PR created after CI passed on dev.'
+              });
+              pr = created.data;
+              core.info(`Created PR #${pr.number} (${pr.html_url})`);
+            } else {
+              core.info(`PR already open: #${pr.number} (${pr.html_url})`);
+            }
+
+            try {
+              await github.graphql(
+                `
+                mutation EnableAutoMerge($pullRequestId: ID!) {
+                  enablePullRequestAutoMerge(
+                    input: { pullRequestId: $pullRequestId, mergeMethod: SQUASH }
+                  ) {
+                    pullRequest {
+                      number
+                    }
+                  }
+                }
+                `,
+                { pullRequestId: pr.node_id }
+              );
+              core.info(`Enabled auto-merge for PR #${pr.number}`);
+            } catch (error) {
+              core.warning(
+                `Could not enable auto-merge for PR #${pr.number}: ${error.message}`
+              );
+            }

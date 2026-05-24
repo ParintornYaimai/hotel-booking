@@ -60,3 +60,39 @@ profile-*
 profile*
 *clinic*
 *flamegraph*
+
+# TypeScript
+*.tsbuildinfo
+
+# package managers
+.yarn
+.pnpm-store
+
+# local env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# temp
+tmp
+temp
+
+# Docker
+docker-compose.override.yml
+
+# test output
+test-results
+playwright-report
+
+# OS
+Thumbs.db
+
+# editor
+.history
+
+# local database / uploads
+uploads
+storage
+*.sqlite
+*.db

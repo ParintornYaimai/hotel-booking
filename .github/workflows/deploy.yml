@@ -1,0 +1,44 @@
+name: Deploy API
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "hotel-booking-api/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    concurrency:
+      group: deploy-api-main
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate environment secret
+        env:
+          API_ENV_FILE: ${{ secrets.API_ENV_FILE }}
+        run: |
+          if [ -z "${API_ENV_FILE}" ]; then
+            echo "Missing required secret: API_ENV_FILE"
+            exit 1
+          fi
+
+      - name: Write API .env from secret
+        run: |
+          cat > hotel-booking-api/.env << 'EOF'
+          ${{ secrets.API_ENV_FILE }}
+          EOF
+          chmod 600 hotel-booking-api/.env
+
+      - name: Deploy
+        run: |
+          docker compose -f hotel-booking-api/docker-compose.yml down --remove-orphans
+          docker compose -f hotel-booking-api/docker-compose.yml up -d --build
