@@ -1,4 +1,5 @@
 import type { FastifyPluginAsync } from 'fastify';
+import fp from 'fastify-plugin';
 
 import type { AppEnv } from '../config/env';
 import { createPgPool } from '../database/postgres';
@@ -39,7 +40,7 @@ function getDbLogMeta(env: AppEnv): DbLogMeta {
   }
 }
 
-export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
+const databasePluginImpl: FastifyPluginAsync<DatabasePluginOptions> = async (
   app,
   { env }
 ) => {
@@ -77,3 +78,7 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
     app.log.info(dbLogMeta, 'PostgreSQL pool closed');
   });
 };
+
+export const databasePlugin = fp(databasePluginImpl, {
+  name: 'database-plugin'
+});
