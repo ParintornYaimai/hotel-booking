@@ -59,6 +59,10 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
     app.log.error({ err: error, ...dbLogMeta }, 'PostgreSQL pool error');
   });
 
+  // Decorate immediately so routes that build repositories at registration time
+  // receive a defined pool reference.
+  app.decorate('db', pool);
+
   try {
     await pool.query('SELECT 1');
     app.log.info(dbLogMeta, 'PostgreSQL connected');
@@ -67,8 +71,6 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
     await pool.end();
     throw error;
   }
-
-  app.decorate('db', pool);
 
   app.addHook('onClose', async () => {
     await pool.end();
