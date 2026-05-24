@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     concurrency:
       group: deploy-api-main
       cancel-in-progress: true
@@ -22,12 +22,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate environment secret
+      - name: Validate required secrets
         env:
           API_ENV_FILE_B64: ${{ secrets.API_ENV_FILE_B64 }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
         run: |
-          if [ -z "${API_ENV_FILE_B64}" ]; then
-            echo "Missing required secret: API_ENV_FILE_B64"
+          missing=0
+          for name in API_ENV_FILE_B64 DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_KEY DEPLOY_PATH; do
+            value="${!name}"
+            if [ -z "$value" ]; then
+              echo "Missing required secret: $name"
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -ne 0 ]; then
             exit 1
           fi
 
@@ -38,7 +50,34 @@ jobs:
           printf '%s' "${API_ENV_FILE_B64}" | base64 -d > hotel-booking-api/.env
           chmod 600 hotel-booking-api/.env
 
-      - name: Deploy
-        run: |
-          docker compose -f hotel-booking-api/docker-compose.yml down --remove-orphans
-          docker compose -f hotel-booking-api/docker-compose.yml up -d --build
+      - name: Prepare remote directory
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            mkdir -p "${{ secrets.DEPLOY_PATH }}"
+
+      - name: Upload API files
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: "hotel-booking-api/**"
+          target: "${{ secrets.DEPLOY_PATH }}/"
+          strip_components: 1
+          overwrite: true
+
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -e
+            cd "${{ secrets.DEPLOY_PATH }}"
+            docker compose down --remove-orphans
+            docker compose up -d --build
