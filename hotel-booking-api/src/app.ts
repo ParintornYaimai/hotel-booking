@@ -49,6 +49,8 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
     logger: fastifyOptions.logger ?? buildLoggerOptions(env)
   });
 
+  app.decorate('env',env)
+
   setupErrorHandling(app);
   app.register(corePlugins, { env });
   app.register(databasePlugin, { env });

@@ -6,8 +6,8 @@ import { AuthController } from '../controllers/auth.controller';
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
   const repository = new AuthRepository(app.db);
-  const loginUseCase = new AuthUseCase(repository);
-  const authController = new AuthController(loginUseCase);
+  const loginUseCase = new AuthUseCase(repository, app.jwt);
+  const authController = new AuthController(loginUseCase, app.env);
 
   app.post('/register', async (req, reply) =>
     authController.register(req, reply)

@@ -37,7 +37,9 @@ const envSchema = z.object({
   DB_POOL_MIN: z.coerce.number().int().min(0).default(0),
   DB_POOL_MAX: z.coerce.number().int().min(1).default(10),
   DB_IDLE_TIMEOUT_MS: z.coerce.number().int().min(1).default(10000),
-  DB_CONNECTION_TIMEOUT_MS: z.coerce.number().int().min(1).default(5000)
+  DB_CONNECTION_TIMEOUT_MS: z.coerce.number().int().min(1).default(5000),
+  JWT_SECRET: z.string().min(32),
+  COOKIE_SECRET: z.string().min(32)
 });
 
 export type AppEnv = z.infer<typeof envSchema>;
