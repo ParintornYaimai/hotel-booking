@@ -1,6 +1,14 @@
 -- Add foreign keys that depend on tables created later in the ordered schema files.
 -- Keep this file idempotent so apply-schema.sh can be re-run safely.
 
+ALTER TABLE hotels
+  ADD COLUMN IF NOT EXISTS destination_id uuid,
+  ADD COLUMN IF NOT EXISTS category_id uuid;
+
+ALTER TABLE payments
+  ADD COLUMN IF NOT EXISTS payment_method_id uuid,
+  ADD COLUMN IF NOT EXISTS payment_gateway_id uuid;
+
 DO $$
 BEGIN
   IF NOT EXISTS (
