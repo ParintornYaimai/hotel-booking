@@ -1,4 +1,5 @@
 import type { FastifyPluginAsync } from 'fastify';
+import fp from 'fastify-plugin';
 
 import type { AppEnv } from '../config/env';
 import { createPgPool } from '../database/postgres';
@@ -39,7 +40,7 @@ function getDbLogMeta(env: AppEnv): DbLogMeta {
   }
 }
 
-export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
+const databasePluginImpl: FastifyPluginAsync<DatabasePluginOptions> = async (
   app,
   { env }
 ) => {
@@ -52,6 +53,10 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
     app.log.error({ err: error, ...dbLogMeta }, 'PostgreSQL pool error');
   });
 
+  // Decorate immediately so routes that build repositories at registration time
+  // receive a defined pool reference.
+  app.decorate('db', pool);
+
   try {
     await pool.query('SELECT 1');
     app.log.info('PostgreSQL connected');
@@ -61,10 +66,12 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
     throw error;
   }
 
-  app.decorate('db', pool);
-
   app.addHook('onClose', async () => {
     await pool.end();
     app.log.info(dbLogMeta, 'PostgreSQL pool closed');
   });
 };
+
+export const databasePlugin = fp(databasePluginImpl, {
+  name: 'database-plugin'
+});
