@@ -46,14 +46,7 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
   const pool = createPgPool(env);
   const dbLogMeta = getDbLogMeta(env);
 
-  app.log.info(
-    {
-      ...dbLogMeta,
-      poolMin: env.DB_POOL_MIN,
-      poolMax: env.DB_POOL_MAX
-    },
-    'Connecting to PostgreSQL'
-  );
+  app.log.info('Connecting to PostgreSQL');
 
   pool.on('error', (error) => {
     app.log.error({ err: error, ...dbLogMeta }, 'PostgreSQL pool error');
@@ -61,7 +54,7 @@ export const databasePlugin: FastifyPluginAsync<DatabasePluginOptions> = async (
 
   try {
     await pool.query('SELECT 1');
-    app.log.info(dbLogMeta, 'PostgreSQL connected');
+    app.log.info('PostgreSQL connected');
   } catch (error) {
     app.log.error({ err: error, ...dbLogMeta }, 'PostgreSQL connection failed');
     await pool.end();
