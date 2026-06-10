@@ -3,7 +3,7 @@ name: CI API
 on:
   push:
     branches:
-      - dev
+      - develop
     paths:
       - "hotel-booking-api/**"
       - ".github/workflows/ci.yml"
