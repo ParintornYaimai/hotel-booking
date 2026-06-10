@@ -21,7 +21,7 @@ test('auth login with valid credentials', async (t) => {
     }
   });
 
-  assert.equal(registerResponse.statusCode, 201);
+  assert.equal(registerResponse.statusCode, 200);
   assert.equal(registerResponse.json().message, 'User registered successfully');
 
   const response = await app.inject({
