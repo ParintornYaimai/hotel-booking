@@ -25,7 +25,7 @@ export class AuthController {
     }
 
     const registerResult = await this.useCase.register(input);
-    reply.send(registerResult);
+    reply.code(201).send(registerResult);
   }
 
   async login(request: FastifyRequest, reply: FastifyReply): Promise<void> {
