@@ -10,6 +10,11 @@ export interface LoginResult {
   tokens: AuthTokens;
 }
 
+export interface AuthSessionContext {
+  ipAddress: string | null;
+  userAgent: string | null;
+}
+
 export interface RegisterInput{
   firstName: string;
   lastName: string;
@@ -19,4 +24,13 @@ export interface RegisterInput{
 
 export interface RegisterResult {
   message: string;
+}
+
+export interface LogoutResult {
+  message: string;
+}
+
+export interface RefreshAccessTokenResult {
+  accessToken: string;
+  refreshToken: string;
 }

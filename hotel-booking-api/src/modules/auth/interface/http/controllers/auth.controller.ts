@@ -40,14 +40,14 @@ export class AuthController {
       return;
     }
 
-    const loginResult = await this.useCase.login(input);
+    const loginResult = await this.useCase.login(input, this.buildSessionContext(request));
 
     reply.setCookie('refreshToken', loginResult.tokens.refreshToken, {
       signed: true,
       httpOnly: true,
       secure: this.nodeEnv === 'production',
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: '/auth',
       maxAge: 7 * 24 * 60 * 60
     });
 
@@ -58,34 +58,62 @@ export class AuthController {
   }
 
   async logOut(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const input = validateInput({
-      schema: loginBodySchema,
-      input: request.body,
-      reply,
-      message: 'Invalid login payload'
+    const signedRefreshToken = request.cookies.refreshToken;
+    const unsignedCookie =
+      typeof signedRefreshToken === 'string'
+        ? request.unsignCookie(signedRefreshToken)
+        : null;
+    const refreshToken = unsignedCookie?.valid ? unsignedCookie.value : undefined;
+
+    const logoutResult = await this.useCase.logout(refreshToken);
+
+    reply.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: this.nodeEnv === 'production',
+      sameSite: 'strict',
+      path: '/auth'
     });
 
-    if (!input) {
-      return;
-    }
-
-    const loginResult = await this.useCase.login(input);
-    reply.send(loginResult);
+    reply.send(logoutResult);
   }
 
   async accessToken(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const input = validateInput({
-      schema: loginBodySchema,
-      input: request.body,
-      reply,
-      message: 'Invalid login payload'
+    const signedRefreshToken = request.cookies.refreshToken;
+    const unsignedCookie =
+      typeof signedRefreshToken === 'string'
+        ? request.unsignCookie(signedRefreshToken)
+        : null;
+    const refreshToken = unsignedCookie?.valid ? unsignedCookie.value : undefined;
+
+    const accessTokenResult = await this.useCase.refreshAccessToken(
+      refreshToken,
+      this.buildSessionContext(request)
+    );
+
+    reply.setCookie('refreshToken', accessTokenResult.refreshToken, {
+      signed: true,
+      httpOnly: true,
+      secure: this.nodeEnv === 'production',
+      sameSite: 'strict',
+      path: '/auth',
+      maxAge: 7 * 24 * 60 * 60
     });
 
-    if (!input) {
-      return;
-    }
+    reply.send({
+      accessToken: accessTokenResult.accessToken
+    });
+  }
 
-    const loginResult = await this.useCase.login(input);
-    reply.send(loginResult);
+  private buildSessionContext(request: FastifyRequest): {
+    ipAddress: string | null;
+    userAgent: string | null;
+  } {
+    return {
+      ipAddress: request.ip ?? null,
+      userAgent:
+        typeof request.headers['user-agent'] === 'string'
+          ? request.headers['user-agent']
+          : null
+    };
   }
 }

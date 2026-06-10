@@ -70,4 +70,6 @@ const databasePluginImpl: FastifyPluginAsync<DatabasePluginOptions> = async (
   });
 };
 
-export const databasePlugin = fp(databasePluginImpl);
+export const databasePlugin = fp(databasePluginImpl, {
+  name: 'database-plugin'
+});
