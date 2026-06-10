@@ -13,7 +13,7 @@ import type {
 import type { AuthUseCasePort } from '../ports/auth-use-case.port';
 import type { AuthUser, SafeAuthUser } from '../../domain/entities/auth-user';
 import type { AuthRepositoryPort } from '../../domain/repositories/auth.repository';
-import { ConflictError, UnauthorizedError } from '../../../../shared/errors';
+import { ConflictError, UnauthorizedError } from '@/shared/errors';
 
 
 interface AccessTokenPayload {

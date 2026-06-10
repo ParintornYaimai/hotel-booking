@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import type { GetUserByIdUseCase } from '../../../application/use-cases/get-user-by-id.use-case';
-import { validateInput } from '../../../../../shared/validation/validate-input';
+import { validateInput } from '@/shared/validation/validate-input';
 import { userParamsSchema } from '../schemas/get-user-by-id.schema';
 
 export class GetUserByIdController {

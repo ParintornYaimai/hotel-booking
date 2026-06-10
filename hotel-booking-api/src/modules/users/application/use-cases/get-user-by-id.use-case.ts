@@ -1,6 +1,6 @@
 import type { User } from '../../domain/entities/user';
 import type { UserRepository } from '../../domain/repositories/user.repository';
-import { NotFoundError } from '../../../../shared/errors';
+import { NotFoundError } from '@/shared/errors';
 
 export class GetUserByIdUseCase {
   constructor(private readonly repository: UserRepository) {}

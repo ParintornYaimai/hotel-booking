@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import type { GetHotelByIdUseCase } from '../../../application/use-cases/get-hotel-by-id.use-case';
-import { validateInput } from '../../../../../shared/validation/validate-input';
+import { validateInput } from '@/shared/validation/validate-input';
 import { hotelParamsSchema } from '../schemas/get-hotel-by-id.schema';
 
 export class GetHotelByIdController {

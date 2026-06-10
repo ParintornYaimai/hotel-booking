@@ -1,6 +1,6 @@
 import type { Booking, CreateBookingInput } from '../../domain/entities/booking';
 import type { BookingRepository } from '../../domain/repositories/booking.repository';
-import { BadRequestError, ConflictError } from '../../../../shared/errors';
+import { BadRequestError, ConflictError } from '@/shared/errors';
 
 function isValidDateInput(value: string): boolean {
   const parsed = Date.parse(value);

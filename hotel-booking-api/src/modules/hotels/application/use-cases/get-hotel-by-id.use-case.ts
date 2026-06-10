@@ -1,6 +1,6 @@
 import type { Hotel } from '../../domain/entities/hotel';
 import type { HotelRepository } from '../../domain/repositories/hotel.repository';
-import { NotFoundError } from '../../../../shared/errors';
+import { NotFoundError } from '@/shared/errors';
 
 export class GetHotelByIdUseCase {
   constructor(private readonly repository: HotelRepository) {}
