@@ -1,9 +1,9 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import type { AuthUseCasePort } from '../../../application/ports/auth-use-case.port';
-import { loginBodySchema } from '../schemas/auth.schema';
+import { loginBodySchema, registerBodySchema } from '../schemas/auth.schema';
 import { validateInput } from '../../../../../shared/validation/validate-input';
-import { AppEnv } from '../../../../../shared/config/env';
+import type { AppEnv } from '../../../../../shared/config/env';
 
 
 export class AuthController {
@@ -14,18 +14,18 @@ export class AuthController {
 
   async register(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const input = validateInput({
-      schema: loginBodySchema,
+      schema: registerBodySchema,
       input: request.body,
       reply,
-      message: 'Invalid login payload'
+      message: 'Invalid register payload'
     });
 
     if (!input) {
       return;
     }
 
-    const loginResult = await this.useCase.login(input);
-    reply.send(loginResult);
+    const registerResult = await this.useCase.register(input);
+    reply.send(registerResult);
   }
 
   async login(request: FastifyRequest, reply: FastifyReply): Promise<void> {

@@ -7,11 +7,9 @@ import { AuthController } from '../controllers/auth.controller';
 export const authRoutes: FastifyPluginAsync = async (app) => {
   const repository = new AuthRepository(app.db);
   const loginUseCase = new AuthUseCase(repository, app.jwt);
-  const authController = new AuthController(loginUseCase, app.env);
+  const authController = new AuthController(loginUseCase, app.env.NODE_ENV);
 
-  app.post('/register', async (req, reply) =>
-    authController.register(req, reply)
-  );
+  app.post('/register', async (req, reply) => authController.register(req, reply));
   app.post('/login', async (req, reply) => authController.login(req, reply));
   app.delete('/logout', async (req, reply) =>
     authController.logOut(req, reply)

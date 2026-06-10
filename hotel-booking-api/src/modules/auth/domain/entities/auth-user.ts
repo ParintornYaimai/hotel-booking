@@ -16,5 +16,11 @@ export interface AuthUser {
   updated_at: Date;
   deleted_at: Date | null;
 }
+export interface CreateAuthUserInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  passwordHash: string;
+}
 
 export type SafeAuthUser = Omit<AuthUser, 'password_hash'>;
