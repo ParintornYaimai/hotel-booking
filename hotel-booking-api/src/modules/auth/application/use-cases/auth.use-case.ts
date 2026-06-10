@@ -1,12 +1,16 @@
 import bcrypt from 'bcryptjs';
 import type { FastifyInstance } from 'fastify';
 
-import type { LoginInput } from '../dto/auth.dto';
-import type { LoginResult } from '../dto/auth.dto';
+import type {
+  LoginInput,
+  LoginResult,
+  RegisterInput,
+  RegisterResult
+} from '../dto/auth.dto';
 import type { AuthUseCasePort } from '../ports/auth-use-case.port';
 import type { AuthUser, SafeAuthUser } from '../../domain/entities/auth-user';
 import type { AuthRepositoryPort } from '../../domain/repositories/auth.repository';
-import { UnauthorizedError } from '../../../../shared/errors';
+import { ConflictError, UnauthorizedError } from '../../../../shared/errors';
 
 interface AccessTokenPayload {
   userId: string;
@@ -30,7 +34,7 @@ export class AuthUseCase implements AuthUseCasePort {
       });
     }
 
-    const isValidPassword = this.verifyPassword(
+    const isValidPassword = await this.verifyPassword(
       input.password,
       user.password_hash
     );
@@ -54,6 +58,29 @@ export class AuthUseCase implements AuthUseCasePort {
     };
   }
 
+  async register(input: RegisterInput): Promise<RegisterResult> {
+    const existingUser = await this.repository.findByEmail(input.email);
+    if (existingUser) {
+      throw new ConflictError('Email already exists', {
+        code: 'EMAIL_ALREADY_EXISTS',
+        details: { email: input.email }
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(input.password, 10);
+
+    await this.repository.create({
+      firstName: input.firstName,
+      lastName: input.lastName,
+      email: input.email,
+      passwordHash
+    });
+
+    return {
+      message: 'User registered successfully'
+    };
+  }
+
   private buildTokenPayload(user: AuthUser): AccessTokenPayload {
     return {
       userId: user.id,
@@ -72,8 +99,8 @@ export class AuthUseCase implements AuthUseCasePort {
     return this.jwt.sign(payload, { expiresIn: '7d' });
   }
 
-  private verifyPassword(userPassword: string, passwordHash: string): boolean {
-    return bcrypt.compareSync(userPassword, passwordHash);
+  private async verifyPassword(userPassword: string, passwordHash: string):Promise<boolean> {
+    return bcrypt.compare(userPassword, passwordHash);
   }
 
   private mapResponse(user: AuthUser): SafeAuthUser {

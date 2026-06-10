@@ -1,6 +1,9 @@
 import type { Pool } from 'pg';
 import type { AuthUser } from '../../domain/entities/auth-user';
-import type { AuthRepositoryPort } from '../../domain/repositories/auth.repository';
+import type {
+  AuthRepositoryPort,
+  CreateAuthUserInput
+} from '../../domain/repositories/auth.repository';
 
 interface AuthUserRow {
   id: string;
@@ -64,4 +67,31 @@ export class AuthRepository implements AuthRepositoryPort {
     return mapAuthUser(result.rows[0]);
   }
 
+  async create(input: CreateAuthUserInput): Promise<AuthUser> {
+    const result = await this.db.query<AuthUserRow>(
+      `INSERT INTO users (
+         email,
+         first_name,
+         last_name,
+         password_hash,
+         role,
+         status,
+         is_email_verified,
+         created_at,
+         updated_at
+       )
+       VALUES ($1, $2, $3, $4, 'customer', 'active', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+       RETURNING id::text, email, username, first_name, last_name, password_hash,
+                 phone_number, phone_country_code, avatar_url, role, status,
+                 is_email_verified, last_login_at, created_at, updated_at, deleted_at`,
+      [
+        input.email,
+        input.firstName,
+        input.lastName,
+        input.passwordHash
+      ]
+    );
+
+    return mapAuthUser(result.rows[0]);
+  }
 }

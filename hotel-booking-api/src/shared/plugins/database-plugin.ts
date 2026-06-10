@@ -72,6 +72,10 @@ const databasePluginImpl: FastifyPluginAsync<DatabasePluginOptions> = async (
   });
 };
 
+<<<<<<< HEAD
 export const databasePlugin = fp(databasePluginImpl, {
   name: 'database-plugin'
 });
+=======
+export const databasePlugin = fp(databasePluginImpl);
+>>>>>>> develop
