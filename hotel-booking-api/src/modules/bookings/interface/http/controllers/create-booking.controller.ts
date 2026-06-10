@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import type { CreateBookingUseCase } from '../../../application/use-cases/create-booking.use-case';
-import { validateInput } from '../../../../../shared/validation/validate-input';
+import { validateInput } from '@/shared/validation/validate-input';
 import { createBookingBodySchema } from '../schemas/create-booking.schema';
 
 type CreateBookingRequest = FastifyRequest<{ Body: unknown }>;

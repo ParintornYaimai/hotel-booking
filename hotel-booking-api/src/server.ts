@@ -1,5 +1,5 @@
-import { buildApp } from './app';
-import { loadEnv } from './shared/config/env';
+import { buildApp } from '@/app';
+import { loadEnv } from '@/shared/config/env';
 
 async function start(): Promise<void> {
   const env = loadEnv();

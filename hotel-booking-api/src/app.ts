@@ -1,14 +1,14 @@
 import Fastify, { type FastifyInstance, type FastifyServerOptions } from 'fastify';
 
-import { authRoutes } from './modules/auth/interface/http/routes/auth.route';
-import { bookingRoutes } from './modules/bookings/interface/http/routes/booking.route';
-import { hotelRoutes } from './modules/hotels/interface/http/routes/hotel.route';
-import { systemRoutes } from './modules/system/interface/http/routes/system.route';
-import { userRoutes } from './modules/users/interface/http/routes/user.route';
-import { loadEnv } from './shared/config/env';
-import { databasePlugin } from './shared/plugins/database-plugin';
-import { corePlugins } from './shared/plugins/core-plugins';
-import { setupErrorHandling } from './shared/plugins/error-handler-plugin';
+import { authRoutes } from '@/modules/auth/interface/http/routes/auth.route';
+import { bookingRoutes } from '@/modules/bookings/interface/http/routes/booking.route';
+import { hotelRoutes } from '@/modules/hotels/interface/http/routes/hotel.route';
+import { systemRoutes } from '@/modules/system/interface/http/routes/system.route';
+import { userRoutes } from '@/modules/users/interface/http/routes/user.route';
+import { loadEnv } from '@/shared/config/env';
+import { databasePlugin } from '@/shared/plugins/database-plugin';
+import { corePlugins } from '@/shared/plugins/core-plugins';
+import { setupErrorHandling } from '@/shared/plugins/error-handler-plugin';
 
 export interface BuildAppOptions extends FastifyServerOptions {
   env?: NodeJS.ProcessEnv;

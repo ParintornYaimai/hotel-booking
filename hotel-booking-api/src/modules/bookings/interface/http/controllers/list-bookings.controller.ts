@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ListBookingsUseCase } from '../../../application/use-cases/list-bookings.use-case';
-import { validateInput } from '../../../../../shared/validation/validate-input';
+import { validateInput } from '@/shared/validation/validate-input';
 import { listBookingsQuerySchema } from '../schemas/list-bookings.schema';
 
 export class ListBookingsController {

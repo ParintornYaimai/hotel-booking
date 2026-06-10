@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import type { Pool } from 'pg';
 
-import { NotFoundError } from '../../../../shared/errors';
+import { NotFoundError } from '@/shared/errors';
 import type { Booking, CreateBookingInput } from '../../domain/entities/booking';
 import type {
   BookingFilters,

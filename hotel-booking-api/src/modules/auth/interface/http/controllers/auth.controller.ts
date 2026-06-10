@@ -2,8 +2,8 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import type { AuthUseCasePort } from '../../../application/ports/auth-use-case.port';
 import { loginBodySchema, registerBodySchema } from '../schemas/auth.schema';
-import { validateInput } from '../../../../../shared/validation/validate-input';
-import type { AppEnv } from '../../../../../shared/config/env';
+import type { AppEnv } from '@/shared/config/env';
+import { validateInput } from '@/shared/validation/validate-input';
 
 
 export class AuthController {
