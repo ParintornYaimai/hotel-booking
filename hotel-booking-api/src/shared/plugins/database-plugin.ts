@@ -71,11 +71,6 @@ const databasePluginImpl: FastifyPluginAsync<DatabasePluginOptions> = async (
     app.log.info(dbLogMeta, 'PostgreSQL pool closed');
   });
 };
-
-<<<<<<< HEAD
 export const databasePlugin = fp(databasePluginImpl, {
   name: 'database-plugin'
 });
-=======
-export const databasePlugin = fp(databasePluginImpl);
->>>>>>> develop
