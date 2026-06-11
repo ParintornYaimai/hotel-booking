@@ -6,6 +6,7 @@ import { hotelRoutes } from '@/modules/hotels/interface/http/routes/hotel.route'
 import { systemRoutes } from '@/modules/system/interface/http/routes/system.route';
 import { userRoutes } from '@/modules/users/interface/http/routes/user.route';
 import { loadEnv } from '@/shared/config/env';
+import { authGuardPlugin } from '@/shared/plugins/auth-guard-plugin';
 import { databasePlugin } from '@/shared/plugins/database-plugin';
 import { corePlugins } from '@/shared/plugins/core-plugins';
 import { setupErrorHandling } from '@/shared/plugins/error-handler-plugin';
@@ -53,6 +54,7 @@ export function buildApp(options: BuildAppOptions = {}): FastifyInstance {
 
   setupErrorHandling(app);
   app.register(corePlugins, { env });
+  app.register(authGuardPlugin);
   app.register(databasePlugin, { env });
   app.register(systemRoutes);
   app.register(authRoutes, { prefix: '/auth' });
