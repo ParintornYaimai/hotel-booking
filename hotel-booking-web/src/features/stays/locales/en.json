@@ -1,0 +1,115 @@
+{
+  "searchResults": {
+    "title": "Exclusive Stays",
+    "description": "Discover 124 curated properties in your selected region.",
+    "gridView": "Grid View",
+    "mapView": "Map View",
+    "filters": [
+      ["Price Range", "$150 - $850+"],
+      ["Star Rating", "5 Stars, 4 Stars"],
+      ["Amenities", "Wi-Fi, Pool, Spa & Wellness"],
+      ["Distance from center", "Within 2 miles"]
+    ],
+    "pricePrefix": "Starting from",
+    "priceSuffix": "/night",
+    "cta": "View Deal",
+    "results": [
+      { "imageKey": "azureBay", "location": "Maldives", "name": "Azure Bay Reserve", "price": "$850", "rating": "4.9" },
+      { "imageKey": "glassEcho", "location": "Switzerland", "name": "The Glass Echo Lodge", "price": "$1,200", "rating": "4.8" },
+      { "imageKey": "heritageUrban", "location": "New York", "name": "Heritage Urban Tower", "price": "$640", "rating": "5.0" },
+      { "imageKey": "shores", "location": "Bali, Indonesia", "name": "Wildwood Sanctuary", "price": "$310", "rating": "4.7" },
+      { "imageKey": "peaks", "location": "Zermatt, Switzerland", "name": "Summit Peak Lodge", "price": "$780", "rating": "5.0" },
+      { "imageKey": "santorini", "location": "Santorini, Greece", "name": "The Azure Sanctuary", "price": "$850", "rating": "4.9" }
+    ]
+  },
+  "hotelDetail": {
+    "gallery": ["hero", "azureBay", "glassEcho", "heritageUrban"],
+    "viewAllPhotos": "View all photos",
+    "eyebrow": "5.0 Star Premium Estate",
+    "title": "The Azure Peak Retreat & Spa",
+    "address": "742 Evergreen Terrace, Sapphire Valley, Oregon, USA",
+    "description": "Nestled at the edge of the Cascade Mountains, The Azure Peak Retreat offers an unparalleled escape into nature without sacrificing the comforts of world-class luxury. Our estate features meticulously designed rooms that blend organic textures with modern architectural precision, signature spa treatments, and panoramic forest views.",
+    "amenitiesTitle": "What this place offers",
+    "amenities": ["Infinity Pool", "Fitness Center", "Fine Dining", "Luxury Spa", "Gigabit WiFi", "Free Valet"],
+    "showAmenities": "Show all 24 amenities",
+    "price": "$450",
+    "perNight": "/ night",
+    "reviewsSummary": "4.9 . 128 reviews",
+    "bookingDetails": [
+      ["Check-in", "05/12/2024"],
+      ["Check-out", "05/15/2024"],
+      ["Guests", "2 Guests"]
+    ],
+    "reserveNow": "Reserve Now",
+    "reserveNote": "You won't be charged yet.",
+    "roomsTitle": "Available Rooms",
+    "roomSubtitle": "King bed, Rain shower, Private balcony",
+    "rooms": [
+      {
+        "imageKey": "glassEcho",
+        "name": "Deluxe Forest View",
+        "perks": ["2 Adults", "Free WiFi", "Breakfast incl."],
+        "price": "$450",
+        "tag": "Top seller"
+      },
+      {
+        "imageKey": "peaks",
+        "name": "Azure Executive Suite",
+        "perks": ["2 Adults", "Mini bar", "Butler service"],
+        "price": "$820",
+        "tag": ""
+      },
+      {
+        "imageKey": "azureBay",
+        "name": "Standard Garden Wing",
+        "perks": ["2 Adults", "Workspace"],
+        "price": "$310",
+        "tag": ""
+      }
+    ],
+    "bookNow": "Book Now",
+    "reviewScore": "8.5",
+    "reviewTitle": "Exceptional",
+    "reviewSubtitle": "Based on 128 verified guest reviews",
+    "reviews": [
+      {
+        "initials": "JS",
+        "name": "Julian Schmidt",
+        "rating": "9.5",
+        "text": "The views are simply breathtaking. We stayed in the Forest Suite and woke up to the most incredible sunrise over the valley."
+      },
+      {
+        "initials": "EM",
+        "name": "Elena Martinez",
+        "rating": "8.0",
+        "text": "Beautiful architecture and very clean rooms. The restaurant was a bit busy during breakfast, but I would still recommend going early."
+      }
+    ],
+    "reviewMeta": "Stayed in April 2024",
+    "readAllReviews": "Read all 128 reviews",
+    "policiesTitle": "House Policies",
+    "policies": [
+      {
+        "title": "Check-in / Check-out",
+        "description": "Check-in from 3:00 PM to 10:00 PM. Check-out before 11:00 AM."
+      },
+      {
+        "title": "Cancellation",
+        "description": "Free cancellation up to 48 hours before arrival. After that, 50% of the first night will be charged."
+      },
+      {
+        "title": "Smoking",
+        "description": "This is a strictly non-smoking property. Deep cleaning fees apply."
+      }
+    ],
+    "attractionsTitle": "Nearby Attractions",
+    "attractionMeta": "Local attraction",
+    "attractions": [
+      ["Crystal Falls Hiking Trail", "1.2 km"],
+      ["Valley Village Center", "3.5 km"],
+      ["Sapphire Lake Marina", "5.8 km"],
+      ["Mount Peak Observatory", "12.4 km"]
+    ],
+    "openMap": "Open interactive map"
+  }
+}

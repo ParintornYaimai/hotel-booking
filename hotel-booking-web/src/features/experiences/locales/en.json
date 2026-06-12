@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "eyebrow": "Curated Selection",
+    "title": "Unique Experiences Around the World",
+    "description": "Discover the intersection of untamed wilderness and bespoke luxury through our curated collection of global adventures.",
+    "searchFields": [
+      { "label": "Where to?", "value": "Search destination" },
+      { "label": "Category", "value": "All Experiences" },
+      { "label": "Price Range", "value": "Any Price" }
+    ],
+    "searchButton": "Search"
+  },
+  "filters": ["All", "Adventure", "Wellness", "Cultural", "Nature"],
+  "highlights": [
+    {
+      "badge": "Trending",
+      "imageKey": "peaks",
+      "location": "Patagonia, Chile",
+      "price": "$3,450",
+      "title": "Glacier Trekking & Aurora Observation"
+    },
+    {
+      "badge": "Exclusive",
+      "imageKey": "santorini",
+      "location": "Kyoto, Japan",
+      "price": "$5,200",
+      "title": "Silent Zen Mastery & Tea Rituals"
+    }
+  ],
+  "highlightDescription": "Experience private access, expert guides, and remote landscapes with all logistics handled by our concierge team.",
+  "highlightPricePrefix": "Starting from",
+  "highlightPriceSuffix": "/ person",
+  "highlightLink": "Explore Detail",
+  "collectionSection": {
+    "eyebrow": "Discover More Wonders",
+    "title": "Browse Collection",
+    "items": [
+      { "imageKey": "tokyo", "location": "Japan", "name": "Tokyo Escape", "price": "From $850" },
+      { "imageKey": "paris", "location": "France", "name": "Paris Escape", "price": "From $850" },
+      { "imageKey": "phiPhi", "location": "Thailand", "name": "Phuket Escape", "price": "From $850" },
+      { "imageKey": "santorini", "location": "Greece", "name": "Santorini Escape", "price": "From $850" }
+    ]
+  },
+  "cta": {
+    "title": "Plan your unforgettable experience",
+    "description": "Our specialists are ready to curate a bespoke journey tailored to your most ambitious dreams.",
+    "primary": "Consult a Specialist",
+    "secondary": "Download Brochure"
+  }
+}

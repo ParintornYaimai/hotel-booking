@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Segoe UI", sans-serif;
+  --font-display: "Manrope", "Inter", sans-serif;
+
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-500: #1a73e8;
+  --color-brand-600: #005bbf;
+  --color-brand-700: #1d4ed8;
+  --color-brand-900: #0b1d4d;
+  --color-luxury-amber: #9e4300;
+  --color-luxury-cream: #fff7ed;
+  --color-surface: #f8fafc;
+  --color-surface-soft: #eef6ff;
+  --color-line: #e2e8f0;
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #e2e8f0;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #414754;
+  --color-ink-900: #191c1d;
+
+  --radius-4xl: 2rem;
+  --shadow-glow: 0 18px 40px rgb(26 115 232 / 0.22);
+  --shadow-card: 0 12px 32px rgb(25 28 29 / 0.08);
+  --shadow-elevated: 0 20px 60px rgb(15 23 42 / 0.16);
+  --animate-float-slow: float-slow 8s ease-in-out infinite;
+  --animate-reveal-up: reveal-up 0.7s ease-out both;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--color-ink-900);
+    background: var(--color-surface);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+}
+
+@layer utilities {
+  .image-overlay {
+    background:
+      linear-gradient(180deg, rgb(25 28 29 / 0.4), rgb(25 28 29 / 0.2) 50%, transparent),
+      rgb(0 0 0 / 0.3);
+  }
+}

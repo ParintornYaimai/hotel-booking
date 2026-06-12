@@ -1,0 +1,50 @@
+{
+  "shell": {
+    "brand": "LuxeStay & Nature",
+    "nav": [
+      { "href": "/", "label": "Destinations" },
+      { "href": "/experiences", "label": "Experiences" },
+      { "href": "/login", "label": "Log In" }
+    ]
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to your LuxeStay & Nature account",
+    "fields": {
+      "email": "Email Address",
+      "password": "Password"
+    },
+    "forgotPassword": "Forgot password?",
+    "keepSignedIn": "Keep me signed in for 30 days",
+    "submit": "Sign In",
+    "continueWith": "Or continue with",
+    "providers": ["Google", "Facebook"],
+    "footer": {
+      "prompt": "Do not have an account?",
+      "link": "Sign Up"
+    }
+  },
+  "register": {
+    "title": "Create your account",
+    "subtitle": "Begin your journey with LuxeStay & Nature",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholders": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "name@example.com"
+    },
+    "agreement": "I agree to the Terms of Service and Privacy Policy.",
+    "submit": "Create Account",
+    "google": "Continue with Google",
+    "footer": {
+      "prompt": "Already have an account?",
+      "link": "Sign In"
+    }
+  }
+}

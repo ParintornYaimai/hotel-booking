@@ -1,0 +1,79 @@
+{
+  "hero": {
+    "eyebrow": "Est. 2014",
+    "title": "Our Story",
+    "description": "Redefining luxury travel through the lens of architectural brilliance and ecological harmony."
+  },
+  "purpose": {
+    "eyebrow": "Our Purpose",
+    "title": "Curating the extraordinary",
+    "description": "We believe that travel is not just about the destination, but the dialogue between the guest and the environment. LuxeStay & Nature was founded on the principle that the world's most breathtaking locations deserve stays that are equally remarkable - bespoke sanctuaries where every detail is a testament to quality."
+  },
+  "vision": {
+    "title": "Preserving the wild",
+    "description": "Luxury and sustainability are not mutually exclusive. Our vision is to pioneer a model of high-end hospitality that actively contributes to conservation. Every property in our portfolio must adhere to strict ecological standards, ensuring the landscapes we love remain pristine for generations to come.",
+    "quote": "\"True luxury is found in the stillness of nature and the comfort of knowing your footprint is light.\""
+  },
+  "standardsSection": {
+    "title": "The LuxeStay Standard",
+    "items": [
+      {
+        "icon": "01",
+        "title": "Bespoke Curation",
+        "description": "Every property is hand-selected and vetted through a 150-point inspection for design, comfort, and character."
+      },
+      {
+        "icon": "02",
+        "title": "Local Insight",
+        "description": "Beyond the stay, we connect you with local artisans, historians, and guides for truly immersive cultural experiences."
+      },
+      {
+        "icon": "03",
+        "title": "Sustainable Luxury",
+        "description": "Our Carbon-Neutral stays prioritize renewable energy and waste reduction without compromising on comfort."
+      },
+      {
+        "icon": "04",
+        "title": "24/7 Concierge",
+        "description": "A dedicated personal advisor is at your service from the moment of inquiry until your safe return home."
+      }
+    ]
+  },
+  "stats": [
+    ["10k+", "Global stays"],
+    ["50+", "Countries"],
+    ["200+", "Local guides"],
+    ["98%", "Satisfaction"]
+  ],
+  "teamSection": {
+    "title": "The minds behind the magic",
+    "description": "Our team is a diverse group of architects, hospitality experts, and conservationists united by a passion for the extraordinary.",
+    "members": [
+      {
+        "initials": "JT",
+        "name": "Julian Thorne",
+        "role": "Founder & CEO",
+        "description": "A former architect with 20 years of experience in luxury design and sustainable development.",
+        "tone": "from-slate-200 via-slate-500 to-stone-900"
+      },
+      {
+        "initials": "ER",
+        "name": "Elena Rostova",
+        "role": "Design Lead",
+        "description": "Curating the visual identity and property selection criteria to ensure uncompromising aesthetic standards.",
+        "tone": "from-amber-100 via-zinc-600 to-slate-950"
+      },
+      {
+        "initials": "MC",
+        "name": "Marcus Chen",
+        "role": "Head of Sustainability",
+        "description": "Overseeing conservation partnerships and our commitment to environmental stewardship across all operations.",
+        "tone": "from-emerald-100 via-teal-700 to-slate-950"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Start your journey with us",
+    "button": "Explore Destinations"
+  }
+}

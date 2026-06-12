@@ -1,0 +1,68 @@
+{
+  "page": {
+    "titlePrefix": "สำรวจ",
+    "titleHighlight": "คู่มือท่องเที่ยว",
+    "searchPlaceholder": "ค้นหาบทความ เมือง หรือเรื่องราว...",
+    "recentTitle": "มุมมองล่าสุด"
+  },
+  "filters": ["คู่มือทั้งหมด", "ชายหาด", "ภูเขา", "เมือง", "Hidden Gems"],
+  "featured": {
+    "badge": "เรื่องเด่น",
+    "title": "Amalfi Coast: บทเรียนของการใช้ชีวิตแบบค่อยเป็นค่อยไป",
+    "description": "ค้นพบว่าทำไมหน้าผาโค้งเว้าและหมู่บ้านสีพาสเทลทางตอนใต้ของอิตาลี จึงยังเป็นพื้นที่พักใจชั้นยอดสำหรับคนที่ต้องการจังหวะชีวิตที่ช้าลง",
+    "author": "Elena Rossi",
+    "readTime": "อ่าน 12 นาที",
+    "ariaLabel": "อ่านคู่มือเด่น"
+  },
+  "articles": [
+    {
+      "author": "Marcus Thorne",
+      "category": "ภูเขา",
+      "description": "จากเคบินกระจกในโดโลไมท์สู่ชาโตว์ประวัติศาสตร์ใน Swiss Alps ค้นหาที่พักบนที่สูงที่เหมาะกับคุณ",
+      "illustration": "mountains",
+      "readTime": "อ่าน 8 นาที",
+      "title": "Alpine Sanctuary: 5 รีทรีตที่ไม่ควรพลาด"
+    },
+    {
+      "author": "Sofia Mendez",
+      "category": "ชายหาด",
+      "description": "หลีกหนีความวุ่นวายและค้นพบอ่าวสีเทอร์ควอยซ์ที่เข้าถึงได้ด้วยการเดินเท้าหรือเรือเท่านั้นบนเกาะแบลีแอริกแห่งนี้",
+      "illustration": "beach",
+      "readTime": "อ่าน 6 นาที",
+      "title": "อ่าวลับแห่ง Menorca"
+    },
+    {
+      "author": "Kenji Sato",
+      "category": "เมือง",
+      "description": "คู่มือโรงแรมญี่ปุ่นแบบดั้งเดิมที่วิจิตรที่สุด ท่ามกลางใจกลางเมืองใหญ่ที่เต็มไปด้วยแสงนีออน",
+      "illustration": "city",
+      "readTime": "อ่าน 15 นาที",
+      "title": "Ryokan สายมินิมอลในโตเกียว"
+    },
+    {
+      "author": "Alex Rivera",
+      "category": "Hidden Gems",
+      "description": "เดินทางผ่านเส้นทางห่าจาง ที่ยอดเขาหินปูนตระหง่านตัดกับหมู่บ้านชาวเขาอายุหลายศตวรรษ",
+      "illustration": "hidden",
+      "readTime": "อ่าน 10 นาที",
+      "title": "ชายแดนเหนือของเวียดนาม"
+    },
+    {
+      "author": "Sarah Drumm",
+      "category": "เวลเนส",
+      "description": "Shinrin-yoku หรือการอาบป่าของญี่ปุ่น กำลังเปลี่ยนการท่องเที่ยวหรูให้กลายเป็นประสบการณ์บำบัดได้อย่างไร",
+      "illustration": "wellness",
+      "readTime": "อ่าน 7 นาที",
+      "title": "ศิลปะแห่งการอาบป่า"
+    },
+    {
+      "author": "Julian Voss",
+      "category": "ที่พัก",
+      "description": "สำรวจคลื่นลูกใหม่ของสถาปัตยกรรมคอนกรีตในเม็กซิโกที่กำลังเกิดขึ้นริมชายฝั่งโออาซากา",
+      "illustration": "stay",
+      "readTime": "อ่าน 9 นาที",
+      "title": "Brutalism บนชายหาด"
+    }
+  ],
+  "articleOverlayLabel": "Safe Work"
+}
