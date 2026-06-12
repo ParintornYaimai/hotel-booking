@@ -1,0 +1,157 @@
+{
+  "compactFooter": {
+    "brand": "LuxeStay & Nature",
+    "copyright": "\u00a9 2024 LuxeStay & Nature. All rights reserved.",
+    "description": "Curating the world's most breathtaking stays where luxury meets the wild. Join our exclusive travel community.",
+    "groups": [
+      {
+        "links": ["About Us", "Careers", "Press", "Sustainability"],
+        "title": "Company"
+      },
+      {
+        "links": ["Support", "Safety Information", "Cancellation Options", "COVID-19 Response"],
+        "title": "Support"
+      },
+      {
+        "links": ["Privacy Policy", "Terms of Service", "Cookie Policy"],
+        "title": "Legal"
+      }
+    ],
+    "iconLabels": {
+      "email": "Email",
+      "global": "Global settings",
+      "share": "Share"
+    }
+  },
+  "footer": {
+    "brand": "LuxeStay & Nature",
+    "copyright": "\u00a9 2024 LuxeStay & Nature. All rights reserved.",
+    "description": "Connecting discerning travelers with the world's most exceptional hospitality and natural wonders.",
+    "groups": [
+      {
+        "links": ["Popular Destinations", "Nature Experiences", "Travel Guides", "Exclusive Deals"],
+        "title": "Discover"
+      },
+      {
+        "links": ["Careers", "Support", "Privacy Policy", "Terms of Service"],
+        "title": "Company"
+      }
+    ],
+    "newsletter": {
+      "cta": "Newsletter",
+      "description": "Subscribe for curated travel inspiration.",
+      "placeholder": "Your email address"
+    },
+    "secondaryLinks": ["Cookie Policy", "Accessibility"]
+  },
+  "header": {
+    "activeBrandAriaLabel": "LuxeStay and Nature home",
+    "brand": "LuxeStay & Nature",
+    "listProperty": "List Your Property",
+    "listPropertyShort": "List",
+    "navigation": [
+      { "href": "/", "label": "Destinations" },
+      { "href": "/experiences", "label": "Experiences" },
+      { "href": "/travel-guides", "label": "Travel Guides" },
+      { "href": "/about", "label": "About" }
+    ],
+    "signIn": "Sign In"
+  },
+  "hero": {
+    "description": "Curated stays that blend architectural excellence with untamed natural beauty.",
+    "title": "The World is Your Private Sanctuary"
+  },
+  "bookingSearch": {
+    "button": "Search Stays",
+    "fields": [
+      { "icon": "+", "label": "Destination", "value": "Where to go?" },
+      { "icon": "[]", "label": "Dates", "value": "Add dates" },
+      { "icon": "o", "label": "Guests", "value": "2 adults, 1 room" }
+    ]
+  },
+  "promoSection": {
+    "promos": [
+      {
+        "badge": "Winter escape",
+        "cta": "Explore Now",
+        "imageKey": "coastalPromo",
+        "title": "Get 15% OFF on Coastal Retreats",
+        "tone": "amber"
+      },
+      {
+        "badge": "Members only",
+        "cta": "Claim Deal",
+        "imageKey": "globalPromo",
+        "title": "Unlock 20% OFF Global Bookings",
+        "tone": "blue"
+      }
+    ]
+  },
+  "destinationsSection": {
+    "description": "Most visited destinations across the globe this month.",
+    "items": [
+      { "hotels": "1,240 Hotels", "imageKey": "tokyo", "location": "Japan", "name": "Tokyo" },
+      { "hotels": "890 Hotels", "imageKey": "paris", "location": "France", "name": "Paris" },
+      { "hotels": "540 Hotels", "imageKey": "phiPhi", "location": "Thailand", "name": "Phuket" },
+      { "hotels": "320 Hotels", "imageKey": "santorini", "location": "Greece", "name": "Santorini" }
+    ],
+    "title": "Popular Destinations",
+    "viewAll": "View all"
+  },
+  "natureGetawaysSection": {
+    "description": "Reconnect your senses at resorts that honor wilderness.",
+    "items": [
+      {
+        "description": "Discover secluded falls and hidden basins.",
+        "imageKey": "waterfalls",
+        "name": "Misty Waterfalls"
+      },
+      {
+        "description": "High-altitude luxury for the adventurous soul.",
+        "imageKey": "peaks",
+        "name": "Silent Peaks"
+      },
+      {
+        "description": "Private beach villas on untouched coastlines.",
+        "imageKey": "shores",
+        "name": "Azure Shores"
+      }
+    ],
+    "title": "Nature Getaways"
+  },
+  "featuredHotelsSection": {
+    "description": "Uncompromising luxury rated by our most discerning travelers.",
+    "priceSuffix": "/ night",
+    "title": "Top-Rated Hotels",
+    "items": [
+      { "imageKey": "azureBay", "location": "Maldives", "name": "Azure Bay Reserve", "price": "$850", "rating": "4.9" },
+      { "imageKey": "glassEcho", "location": "Switzerland", "name": "The Glass Echo Lodge", "price": "$1,200", "rating": "4.8" },
+      { "imageKey": "heritageUrban", "location": "New York", "name": "Heritage Urban Tower", "price": "$640", "rating": "5.0" }
+    ]
+  },
+  "benefitsSection": {
+    "items": [
+      {
+        "description": "We match any price for the same property, guaranteed. Luxury does not have to mean overpaying.",
+        "icon": "01",
+        "title": "Best Prices"
+      },
+      {
+        "description": "Plans change. Most of our properties offer free cancellation up to 48 hours before check-in.",
+        "icon": "02",
+        "title": "Flexible Cancellation"
+      },
+      {
+        "description": "Our dedicated concierge team is available 24/7 to ensure your stay is absolutely flawless.",
+        "icon": "03",
+        "title": "Expert Support"
+      }
+    ]
+  },
+  "storySection": {
+    "description": "Join 500k+ luxury travelers who discover the world with LuxeStay & Nature.",
+    "primaryCta": "Become a Member",
+    "secondaryCta": "Browse Destinations",
+    "title": "Ready for your next extraordinary story?"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "checkout": {
+    "applyCoupon": "Apply",
+    "contactFields": {
+      "emailAddress": "Email Address",
+      "fullName": "Full Name",
+      "phoneNumber": "Phone Number"
+    },
+    "couponCode": "Coupon Code",
+    "guestCountLabel": "Number of guests",
+    "guestOptions": ["1 Guest", "2 Guests", "3 Guests", "4 Guests"],
+    "priceLabels": {
+      "resortFee": "Resort & Service Fee",
+      "sevenNightStay": "7 nights stay",
+      "vatTaxes": "VAT & Local taxes"
+    },
+    "proceed": "Proceed to Payment",
+    "reviewBadge": "Premium Selection",
+    "reviewDetails": {
+      "dates": "Oct 12, 2024 - Oct 19, 2024 (7 nights)",
+      "roomType": "Oceanfront Executive Suite"
+    },
+    "sectionTitles": {
+      "contact": "Contact Information",
+      "guest": "Guest Details",
+      "review": "Review Selection"
+    },
+    "secure": "Secure SSL Encrypted Checkout",
+    "specialRequestsLabel": "Special requests",
+    "specialRequestsPlaceholder": "Late check-in, dietary requirements, or room preferences...",
+    "subtitle": "Review your stay details and provide guest information to finalize your reservation.",
+    "summaryLabels": {
+      "bookingDetails": "Booking Details",
+      "dates": "Dates",
+      "duration": "Duration",
+      "guests": "Guests",
+      "priceSummary": "Price Summary",
+      "totalPrice": "Total Price",
+      "totalPriceNote": "Includes all taxes and fees"
+    },
+    "title": "Complete your booking"
+  },
+  "payment": {
+    "fields": {
+      "cardNumber": "Card Number",
+      "cardholderName": "Cardholder Name",
+      "cvv": "CVV",
+      "expiryDate": "Expiry Date"
+    },
+    "methods": ["Credit Card", "PromptPay QR", "Pay Later"],
+    "payNow": "Pay Now",
+    "placeholders": {
+      "cardNumber": "0000 0000 0000 0000",
+      "cardholderName": "Johnathan Doe",
+      "cvv": "000",
+      "expiryDate": "MM / YY"
+    },
+    "secure": "Secure transaction. Your payment information is encrypted using SSL technology.",
+    "title": "Payment Method Selection"
+  },
+  "steps": {
+    "checkout": "Checkout",
+    "payment": "Payment",
+    "success": "Success"
+  },
+  "success": {
+    "actions": {
+      "backHome": "Back to Home",
+      "viewBookings": "View My Bookings"
+    },
+    "badge": "Booking Confirmed",
+    "details": [
+      ["Property", "The Azure Sanctuary"],
+      ["Booking ID", "#LS-882941"],
+      ["Check-in / Check-out", "Oct 24 - Oct 31, 2024"],
+      ["Guests & Room", "2 Adults, Grand Ocean Suite"],
+      ["Payment Method", "Credit Card (**** 4242)"],
+      ["Total Paid", "$6,822.50"]
+    ],
+    "subtitle": "We sent your confirmation details to your email.",
+    "title": "Your booking is confirmed!"
+  },
+  "summaryCard": {
+    "badge": "Premium Selection",
+    "location": "Santorini, Greece",
+    "priceLines": [
+      ["7 nights x $850.00", "$5,950.00"],
+      ["Airport transfer", "$120.00"],
+      ["Service fee", "$210.00"],
+      ["Taxes & fees", "$542.50"]
+    ],
+    "stayFacts": [
+      ["Check-in", "Oct 24, 2024"],
+      ["Check-out", "Oct 31, 2024"],
+      ["Room type", "Grand Ocean Suite"],
+      ["Guests", "2 Adults"]
+    ],
+    "title": "Azure Horizon Estate",
+    "totalPrice": "Total Price",
+    "totalValue": "$6,822.50"
+  }
+}

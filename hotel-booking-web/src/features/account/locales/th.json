@@ -1,0 +1,192 @@
+{
+  "shell": {
+    "eyebrow": "ศูนย์บัญชี",
+    "tabs": [
+      { "href": "/bookings", "label": "การจองของฉัน" },
+      { "href": "/wishlist", "label": "รายการโปรด" },
+      { "href": "/profile", "label": "โปรไฟล์" },
+      { "href": "/account-settings", "label": "ตั้งค่าบัญชี" }
+    ]
+  },
+  "bookingsPage": {
+    "title": "การจองของฉัน",
+    "description": "ติดตามการจองที่กำลังจะมาถึง ตรวจสอบที่พักที่ยืนยันแล้ว และกลับไปวางแผนทริปต่อได้โดยไม่เสียบริบท",
+    "stats": [
+      { "label": "ทริปที่กำลังใช้งาน", "value": "4" },
+      { "label": "ที่พักที่บันทึกไว้", "value": "12" },
+      { "label": "คำขอที่เปิดอยู่", "value": "2" }
+    ],
+    "sectionTitle": "ที่พักที่กำลังจะเข้าพัก",
+    "sectionDescription": "จัดลำดับตามวันเดินทางมาถึงและความพร้อมด้านการชำระเงิน",
+    "filters": ["ทั้งหมด", "กำลังจะมาถึง", "ยืนยันแล้ว", "พรีเมียม"],
+    "labels": {
+      "dates": "วันที่",
+      "stayDetails": "รายละเอียดการเข้าพัก",
+      "tripTotal": "ยอดรวมทริป",
+      "downloadInvoice": "ดาวน์โหลดใบแจ้งหนี้"
+    },
+    "items": [
+      {
+        "ctaHref": "/hotels/azure-sanctuary",
+        "ctaLabel": "ดูที่พัก",
+        "dates": "24 ต.ค. - 31 ต.ค. 2026",
+        "guests": "2 ท่าน",
+        "imageKey": "santorini",
+        "location": "Amalfi Coast, อิตาลี",
+        "nights": "7 คืน",
+        "price": "$3,420.00",
+        "reference": "LS-20415",
+        "status": "กำลังจะมาถึง",
+        "title": "The Azure Sanctuary"
+      },
+      {
+        "ctaHref": "/checkout",
+        "ctaLabel": "จัดการการจอง",
+        "dates": "08 พ.ย. - 11 พ.ย. 2026",
+        "guests": "2 ท่าน",
+        "imageKey": "glassEcho",
+        "location": "Zermatt, สวิตเซอร์แลนด์",
+        "nights": "3 คืน",
+        "price": "$1,980.00",
+        "reference": "LS-20468",
+        "status": "จองแล้ว",
+        "title": "Nordic Glass Cabin"
+      },
+      {
+        "ctaHref": "/hotels/azure-sanctuary",
+        "ctaLabel": "ดูแผนการเดินทาง",
+        "dates": "18 ธ.ค. - 24 ธ.ค. 2026",
+        "guests": "4 ท่าน",
+        "imageKey": "heritageUrban",
+        "location": "เกียวโต, ญี่ปุ่น",
+        "nights": "6 คืน",
+        "price": "$6,900.00",
+        "reference": "LS-20990",
+        "status": "ยืนยันแล้ว",
+        "title": "The Dawn Alpine Resort"
+      },
+      {
+        "ctaHref": "/travel-guides",
+        "ctaLabel": "วางแผนส่วนเสริม",
+        "dates": "14 ม.ค. - 18 ม.ค. 2027",
+        "guests": "2 ท่าน",
+        "imageKey": "azureBay",
+        "location": "ภูเก็ต, ไทย",
+        "nights": "4 คืน",
+        "price": "$4,050.00",
+        "reference": "LS-21422",
+        "status": "กำลังจะมาถึง",
+        "title": "Santorini Moments"
+      },
+      {
+        "ctaHref": "/experiences",
+        "ctaLabel": "สำรวจกิจกรรม",
+        "dates": "02 ก.พ. - 08 ก.พ. 2027",
+        "guests": "3 ท่าน",
+        "imageKey": "shores",
+        "location": "Bora Bora, French Polynesia",
+        "nights": "6 คืน",
+        "price": "$9,250.00",
+        "reference": "LS-21817",
+        "status": "พรีเมียม",
+        "title": "Azure Overwater Villa"
+      }
+    ]
+  },
+  "wishlistPage": {
+    "title": "รายการโปรด",
+    "description": "ที่พักที่คุณบันทึกไว้จะถูกรวบรวมไว้ที่นี่ เพื่อให้คุณเปรียบเทียบราคา อารมณ์ และจุดหมายก่อนตัดสินใจทริปถัดไป",
+    "fromLabel": "เริ่มต้น",
+    "perNight": "ต่อคืน",
+    "bookNow": "จองตอนนี้",
+    "viewStay": "ดูที่พัก",
+    "items": [
+      { "imageKey": "azureBay", "location": "Amalfi Coast, อิตาลี", "price": "EUR 2,680", "title": "Azure Clifftop Villa" },
+      { "imageKey": "glassEcho", "location": "Swiss Alps", "price": "EUR 980", "title": "Arctic Reflection Lodge" },
+      { "imageKey": "heritageUrban", "location": "Prague, Czech Republic", "price": "EUR 1,120", "title": "Panoramic Ridge Retreat" },
+      { "imageKey": "paris", "location": "Venice, อิตาลี", "price": "EUR 710", "title": "Canal House Loft" },
+      { "imageKey": "peaks", "location": "Patagonia, ชิลี", "price": "EUR 1,300", "title": "Elevated Ridge Chalet" },
+      { "imageKey": "tokyo", "location": "โตเกียว, ญี่ปุ่น", "price": "EUR 2,110", "title": "Urban Night Capsule" }
+    ]
+  },
+  "profilePage": {
+    "title": "โปรไฟล์",
+    "description": "อัปเดตข้อมูลตัวตนหลักและความชอบในการเดินทางให้เป็นปัจจุบัน เพื่อให้ทุกการจองเริ่มต้นจากข้อมูลที่ถูกต้อง",
+    "membership": "Platinum Explorer",
+    "summary": {
+      "email": "julian.montgomery@luxestay.com",
+      "initials": "JM",
+      "name": "Julian Montgomery",
+      "username": "@julianmontgomery"
+    },
+    "sections": {
+      "personalInformation": "ข้อมูลส่วนตัว",
+      "remember": "สิ่งที่เราควรจดจำ"
+    },
+    "personalFields": [
+      ["ชื่อเต็ม", "Julian Montgomery"],
+      ["อีเมล", "julian.montgomery@luxestay.com"],
+      ["เบอร์โทรศัพท์", "+1 (415) 555-0138"],
+      ["ช่องทางติดต่อที่ต้องการ", "WhatsApp และอีเมล"]
+    ],
+    "preferenceFields": [
+      ["สไตล์การพักผ่อนที่ชอบ", "ที่พักริมทะเล"],
+      ["จุดหมายปลายทางที่ต้องการ", "หมู่เกาะเมดิเตอร์เรเนียน"],
+      ["สไตล์การเดินทาง", "ลักชัวรีที่ขับเคลื่อนด้วยดีไซน์"],
+      ["หมายเหตุถึงคอนเซียร์จ", "รถรับส่งส่วนตัวและเช็กอินดึก"]
+    ],
+    "sync": "ซิงก์ข้อมูลโปรไฟล์กับการจองครั้งถัดไป",
+    "reset": "รีเซ็ต",
+    "save": "บันทึกการเปลี่ยนแปลง"
+  },
+  "settingsPage": {
+    "title": "ตั้งค่าบัญชี",
+    "description": "ควบคุมการแจ้งเตือน ค่าเริ่มต้นการเดินทาง และการป้องกันการเข้าสู่ระบบ โดยไม่ต้องออกจากศูนย์บัญชี",
+    "sections": {
+      "notifications": "การแจ้งเตือน",
+      "preferences": "ค่าที่ต้องการ",
+      "security": "ความปลอดภัย",
+      "dangerZone": "เขตอันตราย",
+      "deleteAccount": "ลบบัญชี"
+    },
+    "notificationSettings": [
+      {
+        "description": "รับการแจ้งเตือนเช็กอินและอัปเดตกำหนดการเดินทาง",
+        "enabled": true,
+        "label": "การแจ้งเตือนการจอง"
+      },
+      {
+        "description": "รับข้อเสนอที่เหมาะกับคุณจากที่พักที่บันทึกไว้และการค้นหา",
+        "enabled": true,
+        "label": "อัปเดตการตลาด"
+      },
+      {
+        "description": "เปิดข้อความเชิงรุกจากคอนเซียร์จประจำตัวของคุณ",
+        "enabled": false,
+        "label": "ติดตามผลจากคอนเซียร์จ"
+      }
+    ],
+    "preferenceSettings": [
+      { "label": "สกุลเงิน", "value": "EUR" },
+      { "label": "ภาษา", "value": "ไทย" },
+      { "label": "เขตเวลา", "value": "Bangkok (UTC+7)" }
+    ],
+    "securitySettings": [
+      {
+        "description": "เพิ่มขั้นตอนยืนยันตัวตนเมื่อคุณเข้าสู่ระบบ",
+        "enabled": false,
+        "label": "ยืนยันตัวตน 2 ขั้นตอน"
+      },
+      {
+        "description": "อนุญาตให้อุปกรณ์ใหม่เข้าสู่ระบบได้หลังยืนยันผ่านอีเมลเท่านั้น",
+        "enabled": true,
+        "label": "อนุมัติอุปกรณ์ใหม่"
+      }
+    ],
+    "changePassword": "เปลี่ยนรหัสผ่าน",
+    "dangerDescription": "ลบรายละเอียดโปรไฟล์ ที่พักที่บันทึกไว้ และค่าความชอบของผู้เดินทางออกจากพื้นที่ทำงานนี้อย่างถาวร",
+    "dangerButton": "ลบบัญชี",
+    "reset": "รีเซ็ตการเปลี่ยนแปลง",
+    "save": "บันทึกค่าที่ต้องการ"
+  }
+}

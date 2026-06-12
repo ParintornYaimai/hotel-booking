@@ -1,0 +1,68 @@
+{
+  "page": {
+    "titlePrefix": "Explore",
+    "titleHighlight": "Travel Guides",
+    "searchPlaceholder": "Search for articles, cities, or stories...",
+    "recentTitle": "Recent Perspectives"
+  },
+  "filters": ["All Guides", "Beach", "Mountains", "Cities", "Hidden Gems"],
+  "featured": {
+    "badge": "Featured Story",
+    "title": "The Amalfi Coast: A Masterclass in Slow Living",
+    "description": "Discover why the jagged cliffs and pastel-hued villages of Southern Italy remain the ultimate sanctuary for those seeking a slower pace of life.",
+    "author": "Elena Rossi",
+    "readTime": "12 min read",
+    "ariaLabel": "Read featured guide"
+  },
+  "articles": [
+    {
+      "author": "Marcus Thorne",
+      "category": "Mountains",
+      "description": "From glass cabins in the Dolomites to historic chateaus in the Swiss Alps, find your high-altitude escape.",
+      "illustration": "mountains",
+      "readTime": "8 min read",
+      "title": "Alpine Sanctuary: Top 5 Retreats"
+    },
+    {
+      "author": "Sofia Mendez",
+      "category": "Beach",
+      "description": "Escape the crowds and discover the hidden turquoise bays accessible only by foot or boat on this Balearic island.",
+      "illustration": "beach",
+      "readTime": "6 min read",
+      "title": "The Secret Coves of Menorca"
+    },
+    {
+      "author": "Kenji Sato",
+      "category": "Cities",
+      "description": "A guide to the most exquisite traditional inns nestled within the neon-lit heart of the world's largest city.",
+      "illustration": "city",
+      "readTime": "15 min read",
+      "title": "Tokyo's Minimalist Ryokans"
+    },
+    {
+      "author": "Alex Rivera",
+      "category": "Hidden Gems",
+      "description": "Trek through the Ha Giang loop where towering limestone pinnacles meet centuries-old hill tribe villages.",
+      "illustration": "hidden",
+      "readTime": "10 min read",
+      "title": "Vietnam's Northern Frontier"
+    },
+    {
+      "author": "Sarah Drumm",
+      "category": "Wellness",
+      "description": "How the Japanese practice of Shinrin-yoku is transforming luxury travel into a therapeutic experience.",
+      "illustration": "wellness",
+      "readTime": "7 min read",
+      "title": "The Art of Forest Bathing"
+    },
+    {
+      "author": "Julian Voss",
+      "category": "Stay",
+      "description": "Explore Mexico's new wave of concrete architectural wonders emerging from the Oaxacan coast.",
+      "illustration": "stay",
+      "readTime": "9 min read",
+      "title": "Brutalism Meets the Beach"
+    }
+  ],
+  "articleOverlayLabel": "Safe Work"
+}

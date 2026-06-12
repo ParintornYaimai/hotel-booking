@@ -1,0 +1,115 @@
+{
+  "searchResults": {
+    "title": "ที่พักสุดเอ็กซ์คลูซีฟ",
+    "description": "ค้นพบที่พักคัดสรร 124 แห่งในภูมิภาคที่คุณเลือก",
+    "gridView": "มุมมองกริด",
+    "mapView": "มุมมองแผนที่",
+    "filters": [
+      ["ช่วงราคา", "$150 - $850+"],
+      ["ระดับดาว", "5 ดาว, 4 ดาว"],
+      ["สิ่งอำนวยความสะดวก", "Wi-Fi, สระว่ายน้ำ, สปา และเวลเนส"],
+      ["ระยะจากศูนย์กลาง", "ไม่เกิน 2 ไมล์"]
+    ],
+    "pricePrefix": "เริ่มต้นที่",
+    "priceSuffix": "/คืน",
+    "cta": "ดูข้อเสนอ",
+    "results": [
+      { "imageKey": "azureBay", "location": "มัลดีฟส์", "name": "Azure Bay Reserve", "price": "$850", "rating": "4.9" },
+      { "imageKey": "glassEcho", "location": "สวิตเซอร์แลนด์", "name": "The Glass Echo Lodge", "price": "$1,200", "rating": "4.8" },
+      { "imageKey": "heritageUrban", "location": "นิวยอร์ก", "name": "Heritage Urban Tower", "price": "$640", "rating": "5.0" },
+      { "imageKey": "shores", "location": "บาหลี, อินโดนีเซีย", "name": "Wildwood Sanctuary", "price": "$310", "rating": "4.7" },
+      { "imageKey": "peaks", "location": "Zermatt, สวิตเซอร์แลนด์", "name": "Summit Peak Lodge", "price": "$780", "rating": "5.0" },
+      { "imageKey": "santorini", "location": "ซานโตรินี, กรีซ", "name": "The Azure Sanctuary", "price": "$850", "rating": "4.9" }
+    ]
+  },
+  "hotelDetail": {
+    "gallery": ["hero", "azureBay", "glassEcho", "heritageUrban"],
+    "viewAllPhotos": "ดูรูปทั้งหมด",
+    "eyebrow": "ที่พักพรีเมียม 5.0 ดาว",
+    "title": "The Azure Peak Retreat & Spa",
+    "address": "742 Evergreen Terrace, Sapphire Valley, Oregon, USA",
+    "description": "The Azure Peak Retreat ตั้งอยู่ริมเทือกเขา Cascade มอบประสบการณ์พักผ่อนท่ามกลางธรรมชาติอย่างเต็มรูปแบบโดยไม่ลดทอนความสบายระดับเวิลด์คลาส ภายในที่พักออกแบบห้องพักอย่างพิถีพิถัน ผสานพื้นผิวจากธรรมชาติเข้ากับสถาปัตยกรรมร่วมสมัย พร้อมสปาซิกเนเจอร์และวิวป่าแบบพาโนรามา",
+    "amenitiesTitle": "สิ่งอำนวยความสะดวกของที่พัก",
+    "amenities": ["สระว่ายน้ำอินฟินิตี้", "ฟิตเนสเซ็นเตอร์", "ไฟน์ไดนิง", "ลักชัวรีสปา", "Gigabit WiFi", "บริการจอดรถฟรี"],
+    "showAmenities": "ดูสิ่งอำนวยความสะดวกทั้งหมด 24 รายการ",
+    "price": "$450",
+    "perNight": "/ คืน",
+    "reviewsSummary": "4.9 . 128 รีวิว",
+    "bookingDetails": [
+      ["เช็กอิน", "05/12/2024"],
+      ["เช็กเอาต์", "05/15/2024"],
+      ["ผู้เข้าพัก", "2 ท่าน"]
+    ],
+    "reserveNow": "จองตอนนี้",
+    "reserveNote": "คุณจะยังไม่ถูกเรียกเก็บเงินตอนนี้",
+    "roomsTitle": "ห้องพักที่ว่างอยู่",
+    "roomSubtitle": "เตียงคิงไซส์, ฝักบัวเรนชาวเวอร์, ระเบียงส่วนตัว",
+    "rooms": [
+      {
+        "imageKey": "glassEcho",
+        "name": "Deluxe Forest View",
+        "perks": ["2 ท่าน", "Free WiFi", "รวมอาหารเช้า"],
+        "price": "$450",
+        "tag": "ขายดีที่สุด"
+      },
+      {
+        "imageKey": "peaks",
+        "name": "Azure Executive Suite",
+        "perks": ["2 ท่าน", "มินิบาร์", "บริการบัตเลอร์"],
+        "price": "$820",
+        "tag": ""
+      },
+      {
+        "imageKey": "azureBay",
+        "name": "Standard Garden Wing",
+        "perks": ["2 ท่าน", "พื้นที่ทำงาน"],
+        "price": "$310",
+        "tag": ""
+      }
+    ],
+    "bookNow": "จองเลย",
+    "reviewScore": "8.5",
+    "reviewTitle": "ยอดเยี่ยม",
+    "reviewSubtitle": "อ้างอิงจากรีวิวผู้เข้าพักที่ยืนยันแล้ว 128 รายการ",
+    "reviews": [
+      {
+        "initials": "JS",
+        "name": "Julian Schmidt",
+        "rating": "9.5",
+        "text": "วิวสวยจนแทบหยุดหายใจ เราพักห้อง Forest Suite และตื่นมาพร้อมพระอาทิตย์ขึ้นเหนือหุบเขาที่น่าประทับใจมาก"
+      },
+      {
+        "initials": "EM",
+        "name": "Elena Martinez",
+        "rating": "8.0",
+        "text": "สถาปัตยกรรมสวยและห้องพักสะอาดมาก ร้านอาหารค่อนข้างแน่นช่วงมื้อเช้า แต่ก็ยังแนะนำให้ไปลองโดยเฉพาะถ้าไปเช้า"
+      }
+    ],
+    "reviewMeta": "เข้าพักเมื่อเดือนเมษายน 2024",
+    "readAllReviews": "อ่านรีวิวทั้งหมด 128 รายการ",
+    "policiesTitle": "นโยบายของที่พัก",
+    "policies": [
+      {
+        "title": "เช็กอิน / เช็กเอาต์",
+        "description": "เช็กอินได้ตั้งแต่ 15:00 - 22:00 น. และเช็กเอาต์ก่อน 11:00 น."
+      },
+      {
+        "title": "การยกเลิก",
+        "description": "ยกเลิกฟรีก่อนวันเข้าพัก 48 ชั่วโมง หลังจากนั้นจะเรียกเก็บ 50% ของคืนแรก"
+      },
+      {
+        "title": "การสูบบุหรี่",
+        "description": "ที่พักนี้ปลอดบุหรี่โดยเคร่งครัด หากมีการสูบจะมีค่าทำความสะอาดเพิ่มเติม"
+      }
+    ],
+    "attractionsTitle": "สถานที่น่าสนใจใกล้เคียง",
+    "attractionMeta": "สถานที่ท่องเที่ยวใกล้เคียง",
+    "attractions": [
+      ["Crystal Falls Hiking Trail", "1.2 กม."],
+      ["Valley Village Center", "3.5 กม."],
+      ["Sapphire Lake Marina", "5.8 กม."],
+      ["Mount Peak Observatory", "12.4 กม."]
+    ],
+    "openMap": "เปิดแผนที่แบบโต้ตอบ"
+  }
+}
