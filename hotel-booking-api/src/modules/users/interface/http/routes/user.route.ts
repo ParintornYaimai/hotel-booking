@@ -1,24 +1,23 @@
 import type { FastifyPluginAsync } from 'fastify';
 
-import { GetUserByIdUseCase } from '../../../application/use-cases/get-user-by-id.use-case';
-import { ListUsersUseCase } from '../../../application/use-cases/list-users.use-case';
+import { userUseCase } from '../../../application/use-cases/get-user-by-id.use-case';
 import { PgUserRepository } from '../../../infrastructure/repositories/pg-user.repository';
-import { GetUserByIdController } from '../controllers/get-user-by-id.controller';
-import { ListUsersController } from '../controllers/list-users.controller';
+import { UserController } from '../controllers/get-user-by-id.controller';
 
 export const userRoutes: FastifyPluginAsync = async (app) => {
   const repository = new PgUserRepository(app.db);
-  const listUsersUseCase = new ListUsersUseCase(repository);
-  const getUserByIdUseCase = new GetUserByIdUseCase(repository);
+  const getUserByIdUseCase = new userUseCase(repository);
 
-  const listUsersController = new ListUsersController(listUsersUseCase);
-  const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
+  const userController = new UserController(getUserByIdUseCase);
 
-  app.get('/', async (request, reply) =>
-    listUsersController.handle(request, reply)
-  );
-
-  app.get('/:userId', async (request, reply) =>
-    getUserByIdController.handle(request, reply)
-  );
+  // User Info
+  app.get('/me/:userId', async (request, reply) => userController.handle(request, reply));
+  // Update user info
+  app.patch('/me', async (request, reply) => userController.handle(request, reply ));
+  //delete account 
+  app.delete('/me', async (request, reply) => userController.handle(request, reply))
+  //get user preferrence
+  app.get('/me/preferences', async(request, reply) => userController.handle(request, reply))
+  //update preferrence user
+  app.patch('/me/preferences', async(request, reply) => userController.handle(request, reply))
 };

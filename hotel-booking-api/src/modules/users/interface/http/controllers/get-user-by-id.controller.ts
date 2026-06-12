@@ -1,11 +1,11 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import type { GetUserByIdUseCase } from '../../../application/use-cases/get-user-by-id.use-case';
+import type { userUseCase } from '../../../application/use-cases/get-user-by-id.use-case';
 import { validateInput } from '@/shared/validation/validate-input';
 import { userParamsSchema } from '../schemas/get-user-by-id.schema';
 
-export class GetUserByIdController {
-  constructor(private readonly useCase: GetUserByIdUseCase) {}
+export class UserController {
+  constructor(private readonly useCase: userUseCase) {}
 
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const params = validateInput({
